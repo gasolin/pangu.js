@@ -15,7 +15,7 @@
     "spacing",
     "text"
   ],
-  "version": "3.3.0",
+  "version": "4.0.0",
   "author": {
     "name": "Vinta Chen",
     "email": "vinta.chen@gmail.com",
@@ -58,7 +58,6 @@
     "eslint": "5.11.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14.0",
-    "istanbul": "0.4.5",
     "karma": "3.1.4",
     "karma-babel-preprocessor": "8.0.0-beta.0",
     "karma-chrome-launcher": "2.2.0",
@@ -69,6 +68,7 @@
     "karma-sourcemap-loader": "0.3.7",
     "mocha": "5.2.0",
     "puppeteer": "1.11.0",
+    "terser-webpack-plugin": "1.2.1",
     "underscore": "1.9.1",
     "webpack": "4.28.3",
     "webpack-cli": "3.1.2"
