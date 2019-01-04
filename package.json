@@ -39,7 +39,7 @@
     "clear:node": "rm -rf ./dist/node/ ./dist/shared/",
     "clear": "npm run clear:browser && npm run clear:node",
     "build:browser": "npm run clear:browser && webpack && npm run pack",
-    "build:node": "npm run clear:node && babel src/ -d dist/ --ignore browser/*",
+    "build:node": "npm run clear:node && babel src/ -d dist/ --ignore src/browser/",
     "build": "npm run build:browser && npm run build:node",
     "test:browser": "npm run build:browser && karma start",
     "test:node": "npm run build:node && mocha --require @babel/register test/shared/ test/node/",
