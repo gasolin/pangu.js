@@ -30,11 +30,14 @@ const n = '0-9';
 const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([${cjk}])`, 'g');
 
 // The symbols part only includes + - * / = & < >
-const cjkOperatorAns = new RegExp(`([${cjk}])([\\+\\-\\*=&\\|<>])([A-Za-z0-9])`, 'g');
-const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*=&\\|<>])([${cjk}])`, 'g');
+const cjkOperatorAns = new RegExp(`([${cjk}])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])`, 'g');
+const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([${cjk}])`, 'g');
 
-const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@\\/])`, 'g');
-const ansCjk = new RegExp(`([A-Za-z0-9\\/])([${cjk}])`, 'g');
+const fixSlashSpaceAns = new RegExp(`([\\/])( )([a-z0-9\\-_\\.\\/]+)`, 'g');
+const fixAnsSlashSpace = new RegExp(`([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])`, 'g');
+
+const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
+const ansCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
 
 // The ans part does not include ` @ _ |
 const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
@@ -99,6 +102,12 @@ class Pangu {
 
     newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
     console.log(0, 'ansOperatorCjk', newText);
+
+    newText = newText.replace(fixSlashSpaceAns, '$1$3');
+    console.log(0, 'fixSlashSpaceAns', newText);
+
+    newText = newText.replace(fixAnsSlashSpace, '$1$2$4');
+    console.log(0, 'fixAnsSlashSpace', newText);
 
     newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
     console.log(0, 'cjkAnsCjk', newText);
