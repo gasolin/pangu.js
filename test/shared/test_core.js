@@ -4,6 +4,24 @@ const pangu = require('../../dist/shared/core');
 
 describe('Pangu', () => {
   describe('spacing()', () => {
+    // 不處理
+
+    it('略過 _ 符號', () => {
+      assert.equal(pangu.spacing('前面_後面'), '前面_後面');
+      assert.equal(pangu.spacing('前面 _ 後面'), '前面 _ 後面');
+    });
+
+    it('略過 | 符號', () => {
+      assert.equal(pangu.spacing('前面|後面'), '前面|後面');
+      assert.equal(pangu.spacing('前面 | 後面'), '前面 | 後面');
+      assert.equal(pangu.spacing('Vinta|Mollie'), 'Vinta|Mollie');
+      assert.equal(pangu.spacing('Vinta|陳上進'), 'Vinta|陳上進');
+      assert.equal(pangu.spacing('陳上進|Vinta'), '陳上進|Vinta');
+      assert.equal(pangu.spacing('得到一個A|B的結果'), '得到一個 A|B 的結果');
+    });
+
+    // 兩邊都加空格
+
     it('處理 Latin-1 Supplement', () => {
       assert.equal(pangu.spacing('中文Ø漢字'), '中文 Ø 漢字');
       assert.equal(pangu.spacing('中文 Ø 漢字'), '中文 Ø 漢字');
@@ -64,38 +82,6 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('abc 車 123'), 'abc 車 123');
     });
 
-    it('處理 ~ 符號', () => {
-      assert.equal(pangu.spacing('前面~後面'), '前面~ 後面');
-      assert.equal(pangu.spacing('前面 ~ 後面'), '前面 ~ 後面');
-      assert.equal(pangu.spacing('前面~ 後面'), '前面~ 後面');
-    });
-
-    it('處理 ` 符號', () => {
-      assert.equal(pangu.spacing('前面`後面'), '前面 ` 後面');
-    });
-
-    it('處理 ! 符號', () => {
-      assert.equal(pangu.spacing('前面!後面'), '前面! 後面');
-      assert.equal(pangu.spacing('前面 ! 後面'), '前面 ! 後面');
-      assert.equal(pangu.spacing('前面!後面'), '前面! 後面');
-    });
-
-    it('處理 @ 符號', () => {
-      // https://twitter.com/vinta
-      // http://weibo.com/vintalines
-      assert.equal(pangu.spacing('請@vinta吃大便'), '請 @vinta 吃大便');
-      assert.equal(pangu.spacing('請@陳上進 吃大便'), '請 @陳上進 吃大便');
-    });
-
-    it('處理 # 符號', () => {
-      assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
-      assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
-      assert.equal(pangu.spacing('前面#H2G2#後面'), '前面 #H2G2# 後面');
-      assert.equal(pangu.spacing('前面#銀河閃電霹靂車指南#後面'), '前面 #銀河閃電霹靂車指南# 後面');
-    });
-
     it('處理 $ 符號', () => {
       assert.equal(pangu.spacing('前面$後面'), '前面 $ 後面');
       assert.equal(pangu.spacing('前面 $ 後面'), '前面 $ 後面');
@@ -117,90 +103,49 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面&後面'), '前面 & 後面');
       assert.equal(pangu.spacing('前面 & 後面'), '前面 & 後面');
       assert.equal(pangu.spacing('Vinta&Mollie'), 'Vinta&Mollie');
-      assert.equal(pangu.spacing('Vinta&陳上進'), 'Vinta & 陳上進');
-      assert.equal(pangu.spacing('陳上進&Vinta'), '陳上進 & Vinta');
+      assert.equal(pangu.spacing('Vinta&陳上進'), 'Vinta&陳上進');
+      assert.equal(pangu.spacing('陳上進&Vinta'), '陳上進&Vinta');
       assert.equal(pangu.spacing('得到一個A&B的結果'), '得到一個 A&B 的結果');
     });
 
     it('處理 * 符號', () => {
       assert.equal(pangu.spacing('前面*後面'), '前面 * 後面');
       assert.equal(pangu.spacing('前面 * 後面'), '前面 * 後面');
+      assert.equal(pangu.spacing('前面* 後面'), '前面 * 後面');
+      assert.equal(pangu.spacing('前面 *後面'), '前面 * 後面');
       assert.equal(pangu.spacing('Vinta*Mollie'), 'Vinta*Mollie');
-      assert.equal(pangu.spacing('Vinta*陳上進'), 'Vinta * 陳上進');
-      assert.equal(pangu.spacing('陳上進*Vinta'), '陳上進 * Vinta');
+      assert.equal(pangu.spacing('Vinta*陳上進'), 'Vinta*陳上進');
+      assert.equal(pangu.spacing('陳上進*Vinta'), '陳上進*Vinta');
       assert.equal(pangu.spacing('得到一個A*B的結果'), '得到一個 A*B 的結果');
-    });
-
-    it('處理 ( ) 符號', () => {
-      assert.equal(pangu.spacing('前面(中文123漢字)後面'), '前面 (中文 123 漢字) 後面');
-      assert.equal(pangu.spacing('前面(中文123)後面'), '前面 (中文 123) 後面');
-      assert.equal(pangu.spacing('前面(123漢字)後面'), '前面 (123 漢字) 後面');
-      assert.equal(pangu.spacing('前面(中文123) tail'), '前面 (中文 123) tail');
-      assert.equal(pangu.spacing('head (中文123漢字)後面'), 'head (中文 123 漢字) 後面');
-      assert.equal(pangu.spacing('head (中文123漢字) tail'), 'head (中文 123 漢字) tail');
-      assert.equal(pangu.spacing('(or simply "React")'), '(or simply "React")');
-      assert.equal(pangu.spacing("OperationalError: (2006, 'MySQL server has gone away')"), "OperationalError: (2006, 'MySQL server has gone away')");
     });
 
     it('處理 - 符號', () => {
       assert.equal(pangu.spacing('前面-後面'), '前面 - 後面');
       assert.equal(pangu.spacing('前面 - 後面'), '前面 - 後面');
       assert.equal(pangu.spacing('Vinta-Mollie'), 'Vinta-Mollie');
-      assert.equal(pangu.spacing('Vinta-陳上進'), 'Vinta - 陳上進');
-      assert.equal(pangu.spacing('陳上進-Vinta'), '陳上進 - Vinta');
+      assert.equal(pangu.spacing('Vinta-陳上進'), 'Vinta-陳上進');
+      assert.equal(pangu.spacing('陳上進-Vinta'), '陳上進-Vinta');
       assert.equal(pangu.spacing('得到一個A-B的結果'), '得到一個 A-B 的結果');
-    });
-
-    it('略過 _ 符號', () => {
-      assert.equal(pangu.spacing('前面_後面'), '前面_後面');
-      assert.equal(pangu.spacing('前面 _ 後面'), '前面 _ 後面');
-    });
-
-    it('處理 + 符號', () => {
-      assert.equal(pangu.spacing('前面+後面'), '前面 + 後面');
-      assert.equal(pangu.spacing('前面 + 後面'), '前面 + 後面');
-      assert.equal(pangu.spacing('Vinta+Mollie'), 'Vinta+Mollie');
-      assert.equal(pangu.spacing('Vinta+陳上進'), 'Vinta + 陳上進');
-      assert.equal(pangu.spacing('陳上進+Vinta'), '陳上進 + Vinta');
-      assert.equal(pangu.spacing('得到一個A+B的結果'), '得到一個 A+B 的結果');
-      // assert.equal(pangu.spacing('得到一個C+的結果'), '得到一個 C+ 的結果');
-      assert.equal(pangu.spacing('得到一個C++的結果'), '得到一個 C++ 的結果');
     });
 
     it('處理 = 符號', () => {
       assert.equal(pangu.spacing('前面=後面'), '前面 = 後面');
       assert.equal(pangu.spacing('前面 = 後面'), '前面 = 後面');
       assert.equal(pangu.spacing('Vinta=Mollie'), 'Vinta=Mollie');
-      assert.equal(pangu.spacing('Vinta=陳上進'), 'Vinta = 陳上進');
-      assert.equal(pangu.spacing('陳上進=Vinta'), '陳上進 = Vinta');
+      assert.equal(pangu.spacing('Vinta=陳上進'), 'Vinta=陳上進');
+      assert.equal(pangu.spacing('陳上進=Vinta'), '陳上進=Vinta');
       assert.equal(pangu.spacing('得到一個A=B的結果'), '得到一個 A=B 的結果');
     });
 
-    it('處理 { } 符號', () => {
-      assert.equal(pangu.spacing('前面{中文123漢字}後面'), '前面 {中文 123 漢字} 後面');
-      assert.equal(pangu.spacing('前面{中文123}後面'), '前面 {中文 123} 後面');
-      assert.equal(pangu.spacing('前面{123漢字}後面'), '前面 {123 漢字} 後面');
-      assert.equal(pangu.spacing('前面{中文123} tail'), '前面 {中文 123} tail');
-      assert.equal(pangu.spacing('head {中文123漢字}後面'), 'head {中文 123 漢字} 後面');
-      assert.equal(pangu.spacing('head {中文123漢字} tail'), 'head {中文 123 漢字} tail');
-    });
-
-    it('處理 [ ] 符號', () => {
-      assert.equal(pangu.spacing('前面[中文123漢字]後面'), '前面 [中文 123 漢字] 後面');
-      assert.equal(pangu.spacing('前面[中文123]後面'), '前面 [中文 123] 後面');
-      assert.equal(pangu.spacing('前面[123漢字]後面'), '前面 [123 漢字] 後面');
-      assert.equal(pangu.spacing('前面[中文123] tail'), '前面 [中文 123] tail');
-      assert.equal(pangu.spacing('head [中文123漢字]後面'), 'head [中文 123 漢字] 後面');
-      assert.equal(pangu.spacing('head [中文123漢字] tail'), 'head [中文 123 漢字] tail');
-    });
-
-    it('處理 | 符號', () => {
-      assert.equal(pangu.spacing('前面|後面'), '前面 | 後面');
-      assert.equal(pangu.spacing('前面 | 後面'), '前面 | 後面');
-      assert.equal(pangu.spacing('Vinta|Mollie'), 'Vinta|Mollie');
-      assert.equal(pangu.spacing('Vinta|陳上進'), 'Vinta | 陳上進');
-      assert.equal(pangu.spacing('陳上進|Vinta'), '陳上進 | Vinta');
-      assert.equal(pangu.spacing('得到一個A|B的結果'), '得到一個 A|B 的結果');
+    it('處理 + 符號', () => {
+      assert.equal(pangu.spacing('前面+後面'), '前面 + 後面');
+      assert.equal(pangu.spacing('前面 + 後面'), '前面 + 後面');
+      assert.equal(pangu.spacing('Vinta+Mollie'), 'Vinta+Mollie');
+      assert.equal(pangu.spacing('Vinta+陳上進'), 'Vinta+陳上進');
+      assert.equal(pangu.spacing('陳上進+Vinta'), '陳上進+Vinta');
+      assert.equal(pangu.spacing('得到一個A+B的結果'), '得到一個 A+B 的結果');
+      assert.equal(pangu.spacing('得到一個C+的結果'), '得到一個 C+ 的結果');
+      assert.equal(pangu.spacing('得到一個C++的結果'), '得到一個 C++ 的結果');
     });
 
     it('處理 \\ 符號', () => {
@@ -208,111 +153,206 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面 \\ 後面'), '前面 \\ 後面');
     });
 
-    it('處理 : 符號', () => {
-      assert.equal(pangu.spacing('前面:後面'), '前面: 後面');
-      assert.equal(pangu.spacing('前面 : 後面'), '前面 : 後面');
-      assert.equal(pangu.spacing('前面: 後面'), '前面: 後面');
-    });
-
-    it('處理 ; 符號', () => {
-      assert.equal(pangu.spacing('前面;後面'), '前面; 後面');
-      assert.equal(pangu.spacing('前面 ; 後面'), '前面 ; 後面');
-      assert.equal(pangu.spacing('前面; 後面'), '前面; 後面');
-    });
-
-    it('處理 " " 符號', () => {
-      assert.equal(pangu.spacing('前面"中文123漢字"後面'), '前面 "中文 123 漢字" 後面');
-      assert.equal(pangu.spacing('前面"中文123"後面'), '前面 "中文 123" 後面');
-      assert.equal(pangu.spacing('前面"123漢字"後面'), '前面 "123 漢字" 後面');
-      assert.equal(pangu.spacing('前面"中文123" tail'), '前面 "中文 123" tail');
-      assert.equal(pangu.spacing('head "中文123漢字"後面'), 'head "中文 123 漢字" 後面');
-      assert.equal(pangu.spacing('head "中文123漢字" tail'), 'head "中文 123 漢字" tail');
-    });
-
-    it("處理 ' ' 符號", () => {
-      assert.equal(pangu.spacing("陳上進 likes 林依諾's status."), "陳上進 likes 林依諾's status.");
-    });
-
-    it('處理 < > 符號', () => {
-      assert.equal(pangu.spacing('前面<中文123漢字>後面'), '前面 <中文 123 漢字> 後面');
-      assert.equal(pangu.spacing('前面<中文123>後面'), '前面 <中文 123> 後面');
-      assert.equal(pangu.spacing('前面<123漢字>後面'), '前面 <123 漢字> 後面');
-      assert.equal(pangu.spacing('前面<中文123> tail'), '前面 <中文 123> tail');
-      assert.equal(pangu.spacing('head <中文123漢字>後面'), 'head <中文 123 漢字> 後面');
-      assert.equal(pangu.spacing('head <中文123漢字> tail'), 'head <中文 123 漢字> tail');
-    });
-
-    it('處理 < 符號', () => {
-      assert.equal(pangu.spacing('前面<後面'), '前面 < 後面');
-      assert.equal(pangu.spacing('前面 < 後面'), '前面 < 後面');
-      assert.equal(pangu.spacing('Vinta<Mollie'), 'Vinta<Mollie');
-      assert.equal(pangu.spacing('Vinta<陳上進'), 'Vinta < 陳上進');
-      assert.equal(pangu.spacing('陳上進<Vinta'), '陳上進 < Vinta');
-      assert.equal(pangu.spacing('得到一個A<B的結果'), '得到一個 A<B 的結果');
-    });
-
-    it('處理 , 符號', () => {
-      assert.equal(pangu.spacing('前面,後面'), '前面, 後面');
-      assert.equal(pangu.spacing('前面 , 後面'), '前面 , 後面');
-      assert.equal(pangu.spacing('前面, 後面'), '前面, 後面');
-    });
-
-    it('處理 > 符號', () => {
-      assert.equal(pangu.spacing('前面>後面'), '前面 > 後面');
-      assert.equal(pangu.spacing('前面 > 後面'), '前面 > 後面');
-      assert.equal(pangu.spacing('Vinta>Mollie'), 'Vinta>Mollie');
-      assert.equal(pangu.spacing('Vinta>陳上進'), 'Vinta > 陳上進');
-      assert.equal(pangu.spacing('陳上進>Vinta'), '陳上進 > Vinta');
-      assert.equal(pangu.spacing('得到一個A>B的結果'), '得到一個 A>B 的結果');
-    });
-
-    it('處理 . 符號', () => {
-      assert.equal(pangu.spacing('前面.後面'), '前面. 後面');
-      assert.equal(pangu.spacing('前面 . 後面'), '前面 . 後面');
-      assert.equal(pangu.spacing('前面. 後面'), '前面. 後面');
-    });
-
-    it('處理 ? 符號', () => {
-      assert.equal(pangu.spacing('前面?後面'), '前面? 後面');
-      assert.equal(pangu.spacing('前面 ? 後面'), '前面 ? 後面');
-      assert.equal(pangu.spacing('前面? 後面'), '前面? 後面');
-    });
-
     it('處理 / 符號', () => {
       assert.equal(pangu.spacing('前面/後面'), '前面 / 後面');
       assert.equal(pangu.spacing('前面 / 後面'), '前面 / 後面');
       assert.equal(pangu.spacing('Vinta/Mollie'), 'Vinta/Mollie');
-      assert.equal(pangu.spacing('Vinta/陳上進'), 'Vinta / 陳上進');
-      assert.equal(pangu.spacing('陳上進/Vinta'), '陳上進 / Vinta');
+      assert.equal(pangu.spacing('Vinta/陳上進'), 'Vinta/陳上進');
+      assert.equal(pangu.spacing('陳上進/Vinta'), '陳上進/Vinta');
+      assert.equal(pangu.spacing('Mollie/陳上進/Vinta'), 'Mollie/陳上進/Vinta');
       assert.equal(pangu.spacing('得到一個A/B的結果'), '得到一個 A/B 的結果');
+
+      // 跟以上的結果是互斥的
+      assert.equal(pangu.spacing('/home和/root是Linux中的目錄'), '/home 和 /root 是 Linux 中的目錄');
+      assert.equal(pangu.spacing('可以用cat和od指令查看/dev/random和/dev/urandom的內容'), '可以用 cat 和 od 指令查看 /dev/random 和 /dev/urandom 的內容');
     });
 
-    it('處理特殊字元', () => {
-      // \u201c and \u201d
-      assert.equal(pangu.spacing('前面“中文123漢字”後面'), '前面 “中文 123 漢字” 後面');
+    // // \u2027
+    // it('處理 ‧ 符號', () => {
+    //   assert.equal(pangu.spacing('前面‧後面'), '前面 ‧ 後面');
+    // });
 
-      // \u2026
-      assert.equal(pangu.spacing('前面…後面'), '前面… 後面');
-      assert.equal(pangu.spacing('前面……後面'), '前面…… 後面');
+    // 只加右空格
 
-      // \u2027
-      assert.equal(pangu.spacing('前面‧後面'), '前面 ‧ 後面');
+    // // \u2026
+    // it('處理 … 符號', () => {
+    //   assert.equal(pangu.spacing('前面…後面'), '前面… 後面');
+    //   assert.equal(pangu.spacing('前面……後面'), '前面…… 後面');
+    // });
+
+    // 只加左空格
+
+    it('處理 @ 符號', () => {
+      // https://twitter.com/vinta
+      // https://www.weibo.com/vintalines
+      assert.equal(pangu.spacing('請@vinta吃大便'), '請 @vinta 吃大便');
+      assert.equal(pangu.spacing('請@陳上進 吃大便'), '請 @陳上進 吃大便');
     });
+
+    // 換成全形符號
+
+    it('處理 ~ 符號', () => {
+      assert.equal(pangu.spacing('前面~後面'), '前面～後面');
+      assert.equal(pangu.spacing('前面 ~ 後面'), '前面～後面');
+      assert.equal(pangu.spacing('前面~ 後面'), '前面～後面');
+      assert.equal(pangu.spacing('前面 ~後面'), '前面～後面');
+    });
+
+    it('處理 ! 符號', () => {
+      assert.equal(pangu.spacing('前面!後面'), '前面！後面');
+      assert.equal(pangu.spacing('前面 ! 後面'), '前面！後面');
+      assert.equal(pangu.spacing('前面! 後面'), '前面！後面');
+      assert.equal(pangu.spacing('前面 !後面'), '前面！後面');
+    });
+
+    it('處理 ; 符號', () => {
+      assert.equal(pangu.spacing('前面;後面'), '前面；後面');
+      assert.equal(pangu.spacing('前面 ; 後面'), '前面；後面');
+      assert.equal(pangu.spacing('前面; 後面'), '前面；後面');
+      assert.equal(pangu.spacing('前面 ;後面'), '前面；後面');
+    });
+
+    it('處理 : 符號', () => {
+      assert.equal(pangu.spacing('前面:後面'), '前面：後面');
+      assert.equal(pangu.spacing('前面 : 後面'), '前面：後面');
+      assert.equal(pangu.spacing('前面: 後面'), '前面：後面');
+      assert.equal(pangu.spacing('前面 :後面'), '前面：後面');
+      assert.equal(pangu.spacing('前面:) 後面'), '前面 :) 後面');
+      assert.equal(pangu.spacing('前面:abc後面'), '前面 :abc 後面');
+    });
+
+    it('處理 , 符號', () => {
+      assert.equal(pangu.spacing('前面,後面'), '前面，後面');
+      assert.equal(pangu.spacing('前面 , 後面'), '前面，後面');
+      assert.equal(pangu.spacing('前面, 後面'), '前面，後面');
+      assert.equal(pangu.spacing('前面 ,後面'), '前面，後面');
+    });
+
+    it('處理 . 符號', () => {
+      assert.equal(pangu.spacing('前面.後面'), '前面。後面');
+      assert.equal(pangu.spacing('前面 . 後面'), '前面。後面');
+      assert.equal(pangu.spacing('前面. 後面'), '前面。後面');
+      assert.equal(pangu.spacing('前面 .後面'), '前面。後面');
+      assert.equal(pangu.spacing('黑人問號.jpg 後面'), '黑人問號.jpg 後面');
+    });
+
+    it('處理 ? 符號', () => {
+      assert.equal(pangu.spacing('前面?後面'), '前面？後面');
+      assert.equal(pangu.spacing('前面 ? 後面'), '前面？後面');
+      assert.equal(pangu.spacing('前面? 後面'), '前面？後面');
+      assert.equal(pangu.spacing('前面 ?後面'), '前面？後面');
+    });
+
+    // 成對符號：相異
+
+    // it('處理 < 符號', () => {
+    //   assert.equal(pangu.spacing('前面<後面'), '前面 < 後面');
+    //   assert.equal(pangu.spacing('前面 < 後面'), '前面 < 後面');
+    //   assert.equal(pangu.spacing('Vinta<Mollie'), 'Vinta<Mollie');
+    //   assert.equal(pangu.spacing('Vinta<陳上進'), 'Vinta<陳上進');
+    //   assert.equal(pangu.spacing('陳上進<Vinta'), '陳上進<Vinta');
+    //   assert.equal(pangu.spacing('得到一個A<B的結果'), '得到一個 A<B 的結果');
+    // });
+
+    // it('處理 > 符號', () => {
+    //   assert.equal(pangu.spacing('前面>後面'), '前面 > 後面');
+    //   assert.equal(pangu.spacing('前面 > 後面'), '前面 > 後面');
+    //   assert.equal(pangu.spacing('Vinta>Mollie'), 'Vinta>Mollie');
+    //   assert.equal(pangu.spacing('Vinta>陳上進'), 'Vinta>陳上進');
+    //   assert.equal(pangu.spacing('陳上進>Vinta'), '陳上進>Vinta');
+    //   assert.equal(pangu.spacing('得到一個A>B的結果'), '得到一個 A>B 的結果');
+    // });
+
+    // it('處理 < > 符號', () => {
+    //   assert.equal(pangu.spacing('前面<中文123漢字>後面'), '前面 <中文 123 漢字> 後面');
+    //   assert.equal(pangu.spacing('前面<中文123>後面'), '前面 <中文 123> 後面');
+    //   assert.equal(pangu.spacing('前面<123漢字>後面'), '前面 <123 漢字> 後面');
+    //   assert.equal(pangu.spacing('前面<中文123> tail'), '前面 <中文 123> tail');
+    //   assert.equal(pangu.spacing('head <中文123漢字>後面'), 'head <中文 123 漢字> 後面');
+    //   assert.equal(pangu.spacing('head <中文123漢字> tail'), 'head <中文 123 漢字> tail');
+    // });
+
+    // it('處理 ( ) 符號', () => {
+    //   assert.equal(pangu.spacing('前面(中文123漢字)後面'), '前面 (中文 123 漢字) 後面');
+    //   assert.equal(pangu.spacing('前面(中文123)後面'), '前面 (中文 123) 後面');
+    //   assert.equal(pangu.spacing('前面(123漢字)後面'), '前面 (123 漢字) 後面');
+    //   assert.equal(pangu.spacing('前面(中文123) tail'), '前面 (中文 123) tail');
+    //   assert.equal(pangu.spacing('head (中文123漢字)後面'), 'head (中文 123 漢字) 後面');
+    //   assert.equal(pangu.spacing('head (中文123漢字) tail'), 'head (中文 123 漢字) tail');
+    //   assert.equal(pangu.spacing('(or simply "React")'), '(or simply "React")');
+    //   assert.equal(pangu.spacing("OperationalError: (2006, 'MySQL server has gone away')"), "OperationalError: (2006, 'MySQL server has gone away')");
+    // });
+
+    // it('處理 { } 符號', () => {
+    //   assert.equal(pangu.spacing('前面{中文123漢字}後面'), '前面 {中文 123 漢字} 後面');
+    //   assert.equal(pangu.spacing('前面{中文123}後面'), '前面 {中文 123} 後面');
+    //   assert.equal(pangu.spacing('前面{123漢字}後面'), '前面 {123 漢字} 後面');
+    //   assert.equal(pangu.spacing('前面{中文123} tail'), '前面 {中文 123} tail');
+    //   assert.equal(pangu.spacing('head {中文123漢字}後面'), 'head {中文 123 漢字} 後面');
+    //   assert.equal(pangu.spacing('head {中文123漢字} tail'), 'head {中文 123 漢字} tail');
+    // });
+
+    // it('處理 [ ] 符號', () => {
+    //   assert.equal(pangu.spacing('前面[中文123漢字]後面'), '前面 [中文 123 漢字] 後面');
+    //   assert.equal(pangu.spacing('前面[中文123]後面'), '前面 [中文 123] 後面');
+    //   assert.equal(pangu.spacing('前面[123漢字]後面'), '前面 [123 漢字] 後面');
+    //   assert.equal(pangu.spacing('前面[中文123] tail'), '前面 [中文 123] tail');
+    //   assert.equal(pangu.spacing('head [中文123漢字]後面'), 'head [中文 123 漢字] 後面');
+    //   assert.equal(pangu.spacing('head [中文123漢字] tail'), 'head [中文 123 漢字] tail');
+    // });
+
+    // it('處理 “ ” 符號', () => {
+    //   // \u201c and \u201d
+    //   assert.equal(pangu.spacing('前面“中文123漢字”後面'), '前面 “中文 123 漢字” 後面');
+    // });
+
+    // 成對符號：相同
+
+    // it('處理 # 符號', () => {
+    //   assert.equal(pangu.spacing('前面#後面'), '前面 # 後面');
+    //   assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
+    //   assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+    //   assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+    //   assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
+    // });
+
+    // it('處理 # # 符號', () => {
+    //   assert.equal(pangu.spacing('前面#H2G2#後面'), '前面 #H2G2# 後面');
+    //   assert.equal(pangu.spacing('前面#銀河閃電霹靂車指南#後面'), '前面 #銀河閃電霹靂車指南# 後面');
+    // });
+
+    // it('處理 ` ` 符號', () => {
+    //   assert.equal(pangu.spacing('前面`後面'), '前面`後面');
+    //   assert.equal(pangu.spacing('前面`中間`後面'), '前面`中間`後面');
+    // });
+
+    // it('處理 " " 符號', () => {
+    //   assert.equal(pangu.spacing('前面"中文123漢字"後面'), '前面 "中文 123 漢字" 後面');
+    //   assert.equal(pangu.spacing('前面"中文123"後面'), '前面 "中文 123" 後面');
+    //   assert.equal(pangu.spacing('前面"123漢字"後面'), '前面 "123 漢字" 後面');
+    //   assert.equal(pangu.spacing('前面"中文123" tail'), '前面 "中文 123" tail');
+    //   assert.equal(pangu.spacing('head "中文123漢字"後面'), 'head "中文 123 漢字" 後面');
+    //   assert.equal(pangu.spacing('head "中文123漢字" tail'), 'head "中文 123 漢字" tail');
+    // });
+
+    // it("處理 ' ' 符號", () => {
+    //   assert.equal(pangu.spacing("陳上進 likes 林依諾's status."), "陳上進 likes 林依諾's status.");
+    // });
   });
 
-  describe('spacingText()', () => {
-    it('callback', (done) => {
-      pangu.spacingText('中文123漢字abc', (err, newText) => {
-        assert.equal(newText, '中文 123 漢字 abc');
-        done();
-      });
-    });
+  // describe('spacingText()', () => {
+  //   it('callback', (done) => {
+  //     pangu.spacingText('中文123漢字abc', (err, newText) => {
+  //       assert.equal(newText, '中文 123 漢字 abc');
+  //       done();
+  //     });
+  //   });
 
-    it('promise', (done) => {
-      pangu.spacingText('中文123漢字abc', (err, newText) => {
-        assert.equal(newText, '中文 123 漢字 abc');
-        done();
-      });
-    });
-  });
+  //   it('promise', (done) => {
+  //     pangu.spacingText('中文123漢字abc', (err, newText) => {
+  //       assert.equal(newText, '中文 123 漢字 abc');
+  //       done();
+  //     });
+  //   });
+  // });
 });

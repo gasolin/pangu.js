@@ -14,7 +14,7 @@
 // For more information about Unicode blocks, see
 // http://unicode-table.com/en/
 // https://github.com/vinta/pangu
-const cjk = /\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff/;
+const cjk = '\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff';
 
 // ANS is short for Alphabets, Numbers, and Symbols.
 //
@@ -23,21 +23,25 @@ const cjk = /\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u
 // S includes `~!@#$%^&*()-_=+[]{}\|;:'",<.>/?
 //
 // Some S does not include all symbols.
-const a = /A-Za-z/;
-const n = /0-9/;
+const a = 'A-Za-z';
+const n = '0-9';
 
 // The symbols part only includes ~ ! ; : , . ? and space
-const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]*)([~\\!;\\:,\\.\\?]+)([\\s]*)([${cjk}])`, 'g');
+const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([${cjk}])`, 'g');
 
-const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
-const anCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
+// The symbols part only includes + - * / = & < >
+const cjkOperatorAns = new RegExp(`([${cjk}])([\\+\\-\\*=&\\|<>])([A-Za-z0-9])`, 'g');
+const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*=&\\|<>])([${cjk}])`, 'g');
+
+const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@\\/])`, 'g');
+const ansCjk = new RegExp(`([A-Za-z0-9\\/])([${cjk}])`, 'g');
 
 // The ans part does not include ` @ _ |
-const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 
 // The ans part does not include .
-const cjkSpaceAnsCjk = new RegExp(`([${cjk}])([\\s]+)([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
-const cjkAnsSpaceCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([${cjk}])`, 'g');
+const cjkSpaceAnsCjk = new RegExp(`([${cjk}])([\\s]+)([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+const cjkAnsSpaceCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([${cjk}])`, 'g');
 
 const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
 
@@ -52,8 +56,8 @@ const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
 // const cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
 // const hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 
-// const cjkOperatorANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\+\-\*\/=&\\|<>])([A-Za-z0-9])/g;
-// const ansOperatorCJK = /([A-Za-z0-9])([\+\-\*\/=&\\|<>])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// const cjkOperatorAns = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\+\-\*\/=&\\|<>])([A-Za-z0-9])/g;
+// const ansOperatorCjk = /([A-Za-z0-9])([\+\-\*\/=&\\|<>])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 
 // const cjkBracketCJK = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c]+(.*?)[\)\]\}>\u201d]+)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 // const cjkBracket = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c>])/g;
@@ -90,6 +94,12 @@ class Pangu {
     });
     console.log(0, 'cjkSpaceSymbolsSpaceCjk', newText);
 
+    newText = newText.replace(cjkOperatorAns, '$1 $2 $3');
+    console.log(0, 'cjkOperatorAns', newText);
+
+    newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
+    console.log(0, 'ansOperatorCjk', newText);
+
     newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
     console.log(0, 'cjkAnsCjk', newText);
 
@@ -105,8 +115,8 @@ class Pangu {
     newText = newText.replace(cjkAns, '$1 $2');
     console.log(0, 'cjkAns', newText);
 
-    newText = newText.replace(anCjk, '$1 $2');
-    console.log(0, 'anCjk', newText);
+    newText = newText.replace(ansCjk, '$1 $2');
+    console.log(0, 'ansCjk', newText);
 
     // newText = newText.replace(cjkQuote, '$1 $2');
     // newText = newText.replace(quoteCJK, '$1 $2');
@@ -117,8 +127,8 @@ class Pangu {
     // newText = newText.replace(cjkHash, '$1 $2');
     // newText = newText.replace(hashCJK, '$1 $3');
 
-    // // newText = newText.replace(cjkOperatorANS, '$1 $2 $3');
-    // // newText = newText.replace(ansOperatorCJK, '$1 $2 $3');
+    // // newText = newText.replace(cjkOperatorAns, '$1 $2 $3');
+    // // newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
 
     // const oldText = newText;
     // const tmpText = newText.replace(cjkBracketCJK, '$1 $2 $4');
