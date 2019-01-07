@@ -1,47 +1,69 @@
-// CJK is short for Chinese, Japanese and Korean.
+// CJK is short for Chinese, Japanese, and Korean.
 //
-// The constant cjk contains following Unicode blocks:
-// 	\u2e80-\u2eff CJK Radicals Supplement
-// 	\u2f00-\u2fdf Kangxi Radicals
-// 	\u3040-\u309f Hiragana
-// 	\u30a0-\u30ff Katakana
-// 	\u3100-\u312f Bopomofo
-// 	\u3200-\u32ff Enclosed CJK Letters and Months
-// 	\u3400-\u4dbf CJK Unified Ideographs Extension A
-// 	\u4e00-\u9fff CJK Unified Ideographs
-// 	\uf900-\ufaff CJK Compatibility Ideographs
+// CJK includes following Unicode blocks:
+// \u2e80-\u2eff CJK Radicals Supplement
+// \u2f00-\u2fdf Kangxi Radicals
+// \u3040-\u309f Hiragana
+// \u30a0-\u30ff Katakana
+// \u3100-\u312f Bopomofo
+// \u3200-\u32ff Enclosed CJK Letters and Months
+// \u3400-\u4dbf CJK Unified Ideographs Extension A
+// \u4e00-\u9fff CJK Unified Ideographs
+// \uf900-\ufaff CJK Compatibility Ideographs
 //
 // For more information about Unicode blocks, see
-// 	http://unicode-table.com/en/
-//  https://github.com/vinta/pangu
+// http://unicode-table.com/en/
+// https://github.com/vinta/pangu
+const cjk = /\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff/;
 
-// ANS is short for Alphabets, Numbers and Symbols (`~!@#$%^&*()-_=+[]{}\|;:'",<.>/?).
+// ANS is short for Alphabets, Numbers, and Symbols.
 //
-// CAUTION: those ANS in following constants do not contain all symbols above.
+// A includes A-Za-z
+// N includes 0-9
+// S includes `~!@#$%^&*()-_=+[]{}\|;:'",<.>/?
+//
+// Some S does not include all symbols.
+const a = /A-Za-z/;
+const n = /0-9/;
 
-// cjkQuote >> 跟 Go 版差了一個 '
-// quoteCJK >> 跟 Go 版差了一個 '
-const cjkQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(["])/g;
-const quoteCJK = /(["])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
-const fixQuote = /(["']+)(\s*)(.+?)(\s*)(["']+)/g;
-const fixSingleQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])( )(')([A-Za-z])/g;
+// The symbols part only includes ~ ! ; : , . ? and space
+const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]*)([~\\!;\\:,\\.\\?]+)([\\s]*)([${cjk}])`, 'g');
 
-const hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
-const cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
-const hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
+const anCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
 
-const cjkOperatorANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\+\-\*\/=&\\|<>])([A-Za-z0-9])/g;
-const ansOperatorCJK = /([A-Za-z0-9])([\+\-\*\/=&\\|<>])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// The ans part does not include ` @ _ |
+const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 
-const cjkBracketCJK = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c]+(.*?)[\)\]\}>\u201d]+)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
-const cjkBracket = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c>])/g;
-const bracketCJK = /([\)\]\}>\u201d<])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
-const fixBracket = /([\(\[\{<\u201c]+)(\s*)(.+?)(\s*)([\)\]\}>\u201d]+)/;
+// The ans part does not include .
+const cjkSpaceAnsCjk = new RegExp(`([${cjk}])([\\s]+)([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+const cjkAnsSpaceCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([${cjk}])`, 'g');
 
-const fixSymbol = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([~!;:,\.\?\u2026])([A-Za-z0-9])/g;
+const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
 
-const cjkANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([A-Za-z0-9`\$%\^&\*\-=\+\\\|/@\u00a1-\u00ff\u2022\u2027\u2150-\u218f])/g;
-const ansCJK = /([A-Za-z0-9`~\$%\^&\*\-=\+\\\|/!;:,\.\?\u00a1-\u00ff\u2022\u2026\u2027\u2150-\u218f])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// // cjkQuote >> 跟 Go 版差了一個 ' 符號
+// // quoteCJK >> 跟 Go 版差了一個 ' 符號
+// const cjkQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(["])/g;
+// const quoteCJK = /(["])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// const fixQuote = /(["']+)(\s*)(.+?)(\s*)(["']+)/g;
+// const fixSingleQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])( )(')([A-Za-z])/g;
+
+// const hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// const cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
+// const hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+
+// const cjkOperatorANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\+\-\*\/=&\\|<>])([A-Za-z0-9])/g;
+// const ansOperatorCJK = /([A-Za-z0-9])([\+\-\*\/=&\\|<>])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+
+// const cjkBracketCJK = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c]+(.*?)[\)\]\}>\u201d]+)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// const cjkBracket = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c>])/g;
+// const bracketCJK = /([\)\]\}>\u201d<])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+// const fixBracket = /([\(\[\{<\u201c]+)(\s*)(.+?)(\s*)([\)\]\}>\u201d]+)/;
+
+// const fixSymbol = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([~!;:,\.\?\u2026])([A-Za-z0-9])/g;
+
+// const cjkANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([A-Za-z0-9`\$%\^&\*\-=\+\\\|/@\u00a1-\u00ff\u2022\u2027\u2150-\u218f])/g;
+// const ansCJK = /([A-Za-z0-9`~\$%\^&\*\-=\+\\\|/!;:,\.\?\u00a1-\u00ff\u2022\u2026\u2027\u2150-\u218f])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 
 class Pangu {
 
@@ -52,32 +74,65 @@ class Pangu {
     }
 
     let newText = text;
+    console.log(0, 'newText', newText);
 
-    newText = newText.replace(cjkQuote, '$1 $2');
-    newText = newText.replace(quoteCJK, '$1 $2');
-    newText = newText.replace(fixQuote, '$1$3$5');
-    newText = newText.replace(fixSingleQuote, '$1$3$4');
+    // https://stackoverflow.com/questions/4285472/multiple-regex-replace
+    newText = newText.replace(cjkSpaceSymbolsSpaceCjk, function(match, cjk1, space1, symbols, space2, cjk2) {
+      symbols = symbols.replace(/~/g, '～');
+      symbols = symbols.replace(/\!/g, '！');
+      symbols = symbols.replace(/;/g, '；');
+      symbols = symbols.replace(/\:/g, '：');
+      symbols = symbols.replace(/,/g, '，');
+      symbols = symbols.replace(/\./g, '。');
+      symbols = symbols.replace(/\?/g, '？');
 
-    newText = newText.replace(hashANSCJKhash, '$1 $2$3$4 $5');
-    newText = newText.replace(cjkHash, '$1 $2');
-    newText = newText.replace(hashCJK, '$1 $3');
+      return `${cjk1}${symbols}${cjk2}`
+    });
+    console.log(0, 'cjkSpaceSymbolsSpaceCjk', newText);
 
-    newText = newText.replace(cjkOperatorANS, '$1 $2 $3');
-    newText = newText.replace(ansOperatorCJK, '$1 $2 $3');
+    newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
+    console.log(0, 'cjkAnsCjk', newText);
 
-    const oldText = newText;
-    const tmpText = newText.replace(cjkBracketCJK, '$1 $2 $4');
-    newText = tmpText;
-    if (oldText === tmpText) {
-      newText = newText.replace(cjkBracket, '$1 $2');
-      newText = newText.replace(bracketCJK, '$1 $2');
-    }
-    newText = newText.replace(fixBracket, '$1$3$5');
+    newText = newText.replace(cjkSpaceAnsCjk, '$1$2$3 $4');
+    console.log(0, 'cjkSpaceAnsCjk', newText);
 
-    newText = newText.replace(fixSymbol, '$1$2 $3');
+    newText = newText.replace(cjkAnsSpaceCjk, '$1 $2$3$4');
+    console.log(0, 'cjkAnsSpaceCjk', newText);
 
-    newText = newText.replace(cjkANS, '$1 $2');
-    newText = newText.replace(ansCJK, '$1 $2');
+    newText = newText.replace(cjkSymbolCjkAddLeftSpace, '$1 $2$3');
+    console.log(0, 'cjkSymbolCjkAddLeftSpace', newText);
+
+    newText = newText.replace(cjkAns, '$1 $2');
+    console.log(0, 'cjkAns', newText);
+
+    newText = newText.replace(anCjk, '$1 $2');
+    console.log(0, 'anCjk', newText);
+
+    // newText = newText.replace(cjkQuote, '$1 $2');
+    // newText = newText.replace(quoteCJK, '$1 $2');
+    // newText = newText.replace(fixQuote, '$1$3$5');
+    // newText = newText.replace(fixSingleQuote, '$1$3$4');
+
+    // newText = newText.replace(hashANSCJKhash, '$1 $2$3$4 $5');
+    // newText = newText.replace(cjkHash, '$1 $2');
+    // newText = newText.replace(hashCJK, '$1 $3');
+
+    // // newText = newText.replace(cjkOperatorANS, '$1 $2 $3');
+    // // newText = newText.replace(ansOperatorCJK, '$1 $2 $3');
+
+    // const oldText = newText;
+    // const tmpText = newText.replace(cjkBracketCJK, '$1 $2 $4');
+    // newText = tmpText;
+    // if (oldText === tmpText) {
+    //   newText = newText.replace(cjkBracket, '$1 $2');
+    //   newText = newText.replace(bracketCJK, '$1 $2');
+    // }
+    // newText = newText.replace(fixBracket, '$1$3$5');
+
+    // // newText = newText.replace(fixSymbol, '$1$2 $3');
+
+    // newText = newText.replace(cjkANS, '$1 $2');
+    // newText = newText.replace(ansCJK, '$1 $2');
 
     return newText;
   }
@@ -95,5 +150,6 @@ class Pangu {
 
 const pangu = new Pangu();
 
-exports = module.exports = pangu;
-exports.Pangu = Pangu;
+module.exports = pangu;
+module.exports.default = pangu;
+module.exports.Pangu = Pangu;
