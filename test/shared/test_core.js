@@ -4,7 +4,7 @@ const pangu = require('../../dist/shared/core');
 
 describe('Pangu', () => {
   describe('spacing()', () => {
-    // 不處理
+    // 略過
 
     it('略過 _ 符號', () => {
       assert.equal(pangu.spacing('前面_後面'), '前面_後面');
@@ -12,6 +12,16 @@ describe('Pangu', () => {
     });
 
     // 兩邊都加空格
+
+    it('處理 Alphabets', () => {
+      assert.equal(pangu.spacing('中文abc'), '中文 abc');
+      assert.equal(pangu.spacing('abc中文'), 'abc 中文');
+    });
+
+    it('處理 Numbers', () => {
+      assert.equal(pangu.spacing('中文123'), '中文 123');
+      assert.equal(pangu.spacing('123中文'), '123 中文');
+    });
 
     it('處理 Latin-1 Supplement', () => {
       assert.equal(pangu.spacing('中文Ø漢字'), '中文 Ø 漢字');
@@ -190,6 +200,15 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('請@陳上進 吃大便'), '請 @陳上進 吃大便');
     });
 
+    it('處理 # 符號', () => {
+      assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
+      assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
+      assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
+      assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+      assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+      assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
+    });
+
     // 換成全形符號
 
     it('處理 ~ 符號', () => {
@@ -310,15 +329,6 @@ describe('Pangu', () => {
     // });
 
     // 成對符號：相同
-
-    it('處理 # 符號', () => {
-      assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
-      assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
-      assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
-      assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
-    });
 
     // it('處理 # # 符號', () => {
     //   assert.equal(pangu.spacing('前面#H2G2#後面'), '前面 #H2G2# 後面');

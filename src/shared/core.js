@@ -26,6 +26,10 @@ const cjk = '\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u
 const a = 'A-Za-z';
 const n = '0-9';
 
+const anyCjk = new RegExp(`[${cjk}]`);
+
+// 需要特別處理的規則
+
 // The symbols part only includes ~ ! ; : , . ? and space
 const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([${cjk}])`, 'g');
 
@@ -36,18 +40,20 @@ const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([${cjk}]
 const fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
 const fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
 
-// The ans part does not include ` @ _ |
-const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+// The ans part does not include ` @ # _ |
+const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 
 const fixCjkColonA = new RegExp(`([${cjk}])\\:([A-Z0-9])`, 'g');
 
-// The ans part does not include .
+// The ans part does not include . ( ) [ ] { }
 const cjkSpaceAnsCjk = new RegExp(`([${cjk}])([\\s]+)([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 const cjkAnsSpaceCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([${cjk}])`, 'g');
 
 const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
 
-const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
+// 總是成立的規則
+
+const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@#])`, 'g');
 const ansCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
 
 const anLeftSymbol = new RegExp('([A-Za-z0-9])([\\(\\[\\{])', 'g');
@@ -81,6 +87,10 @@ class Pangu {
   spacing(text) {
     if (typeof text !== 'string') {
       console.warn(`Pangu.spacing(text) only accepts string but got ${typeof text}`);
+      return text;
+    }
+
+    if (!anyCjk.test(text)) {
       return text;
     }
 
