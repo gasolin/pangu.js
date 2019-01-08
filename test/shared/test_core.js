@@ -178,6 +178,24 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('當你用cat和od指令查看/dev/random和/dev/urandom的內容時'), '當你用 cat 和 od 指令查看 /dev/random 和 /dev/urandom 的內容時');
     });
 
+    it('處理 < 符號', () => {
+      assert.equal(pangu.spacing('前面<後面'), '前面 < 後面');
+      assert.equal(pangu.spacing('前面 < 後面'), '前面 < 後面');
+      assert.equal(pangu.spacing('Vinta<Mollie'), 'Vinta<Mollie');
+      assert.equal(pangu.spacing('Vinta<陳上進'), 'Vinta < 陳上進');
+      assert.equal(pangu.spacing('陳上進<Vinta'), '陳上進 < Vinta');
+      assert.equal(pangu.spacing('得到一個A<B的結果'), '得到一個 A<B 的結果');
+    });
+
+    it('處理 > 符號', () => {
+      assert.equal(pangu.spacing('前面>後面'), '前面 > 後面');
+      assert.equal(pangu.spacing('前面 > 後面'), '前面 > 後面');
+      assert.equal(pangu.spacing('Vinta>Mollie'), 'Vinta>Mollie');
+      assert.equal(pangu.spacing('Vinta>陳上進'), 'Vinta > 陳上進');
+      assert.equal(pangu.spacing('陳上進>Vinta'), '陳上進 > Vinta');
+      assert.equal(pangu.spacing('得到一個A>B的結果'), '得到一個 A>B 的結果');
+    });
+
     // // \u2027
     // it('處理 ‧ 符號', () => {
     //   assert.equal(pangu.spacing('前面‧後面'), '前面 ‧ 後面');
@@ -267,24 +285,6 @@ describe('Pangu', () => {
 
     // 成對符號：相異
 
-    it('處理 < 符號', () => {
-      assert.equal(pangu.spacing('前面<後面'), '前面 < 後面');
-      assert.equal(pangu.spacing('前面 < 後面'), '前面 < 後面');
-      assert.equal(pangu.spacing('Vinta<Mollie'), 'Vinta<Mollie');
-      assert.equal(pangu.spacing('Vinta<陳上進'), 'Vinta < 陳上進');
-      assert.equal(pangu.spacing('陳上進<Vinta'), '陳上進 < Vinta');
-      assert.equal(pangu.spacing('得到一個A<B的結果'), '得到一個 A<B 的結果');
-    });
-
-    it('處理 > 符號', () => {
-      assert.equal(pangu.spacing('前面>後面'), '前面 > 後面');
-      assert.equal(pangu.spacing('前面 > 後面'), '前面 > 後面');
-      assert.equal(pangu.spacing('Vinta>Mollie'), 'Vinta>Mollie');
-      assert.equal(pangu.spacing('Vinta>陳上進'), 'Vinta > 陳上進');
-      assert.equal(pangu.spacing('陳上進>Vinta'), '陳上進 > Vinta');
-      assert.equal(pangu.spacing('得到一個A>B的結果'), '得到一個 A>B 的結果');
-    });
-
     // it('處理 < > 符號', () => {
     //   assert.equal(pangu.spacing('前面<中文123漢字>後面'), '前面 <中文 123 漢字> 後面');
     //   assert.equal(pangu.spacing('前面<中文123>後面'), '前面 <中文 123> 後面');
@@ -354,19 +354,19 @@ describe('Pangu', () => {
     // });
   });
 
-  // describe('spacingText()', () => {
-  //   it('callback', (done) => {
-  //     pangu.spacingText('中文123漢字abc', (err, newText) => {
-  //       assert.equal(newText, '中文 123 漢字 abc');
-  //       done();
-  //     });
-  //   });
+  describe('spacingText()', () => {
+    it('callback', (done) => {
+      pangu.spacingText('中文123漢字abc', (err, newText) => {
+        assert.equal(newText, '中文 123 漢字 abc');
+        done();
+      });
+    });
 
-  //   it('promise', (done) => {
-  //     pangu.spacingText('中文123漢字abc', (err, newText) => {
-  //       assert.equal(newText, '中文 123 漢字 abc');
-  //       done();
-  //     });
-  //   });
-  // });
+    it('promise', (done) => {
+      pangu.spacingText('中文123漢字abc', (err, newText) => {
+        assert.equal(newText, '中文 123 漢字 abc');
+        done();
+      });
+    });
+  });
 });

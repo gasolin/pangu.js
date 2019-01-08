@@ -30,9 +30,6 @@ const anyCjk = new RegExp(`[${cjk}]`);
 
 // 需要特別處理的規則
 
-// The symbols part only includes ~ ! ; : , . ? and space
-const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([${cjk}])`, 'g');
-
 // The symbols part only includes + - * / = & | < >
 const cjkOperatorAns = new RegExp(`([${cjk}])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])`, 'g');
 const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([${cjk}])`, 'g');
@@ -58,6 +55,11 @@ const ansCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
 
 const anLeftSymbol = new RegExp('([A-Za-z0-9])([\\(\\[\\{])', 'g');
 const rightSymbolAn = new RegExp('([\\)\\]\\}])([A-Za-z0-9])', 'g');
+
+// The symbols part only includes ~ ! ; : , . ? and space
+const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([ ]*)([~\\!;\\:,\\.\\?]+)([ ]*)([${cjk}])`, 'g');
+
+// ---
 
 // // cjkQuote >> 跟 Go 版差了一個 ' 符號
 // // quoteCJK >> 跟 Go 版差了一個 ' 符號
@@ -183,6 +185,10 @@ class Pangu {
     } catch (err) {
       callback(err);
     }
+  }
+
+  spacingTextSync(text) {
+    return this.spacing(text);
   }
 }
 
