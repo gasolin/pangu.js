@@ -29,24 +29,29 @@ const n = '0-9';
 // The symbols part only includes ~ ! ; : , . ? and space
 const cjkSpaceSymbolsSpaceCjk = new RegExp(`([${cjk}])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([${cjk}])`, 'g');
 
-// The symbols part only includes + - * / = & < >
+// The symbols part only includes + - * / = & | < >
 const cjkOperatorAns = new RegExp(`([${cjk}])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])`, 'g');
 const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([${cjk}])`, 'g');
 
-const fixSlashSpaceAns = new RegExp(`([\\/])( )([a-z0-9\\-_\\.\\/]+)`, 'g');
-const fixAnsSlashSpace = new RegExp(`([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])`, 'g');
-
-const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
-const ansCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
+const fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
+const fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
 
 // The ans part does not include ` @ _ |
 const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+
+const fixCjkColonA = new RegExp(`([${cjk}])\\:([A-Z0-9])`, 'g');
 
 // The ans part does not include .
 const cjkSpaceAnsCjk = new RegExp(`([${cjk}])([\\s]+)([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 const cjkAnsSpaceCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([${cjk}])`, 'g');
 
 const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
+
+const cjkAns = new RegExp(`([${cjk}])([A-Za-z0-9@])`, 'g');
+const ansCjk = new RegExp(`([A-Za-z0-9])([${cjk}])`, 'g');
+
+const anLeftSymbol = new RegExp('([A-Za-z0-9])([\\(\\[\\{])', 'g');
+const rightSymbolAn = new RegExp('([\\)\\]\\}])([A-Za-z0-9])', 'g');
 
 // // cjkQuote >> 跟 Go 版差了一個 ' 符號
 // // quoteCJK >> 跟 Go 版差了一個 ' 符號
@@ -73,7 +78,6 @@ const cjkSymbolCjkAddLeftSpace = new RegExp(`([${cjk}])([@])([${cjk}])`, 'g');
 // const ansCJK = /([A-Za-z0-9`~\$%\^&\*\-=\+\\\|/!;:,\.\?\u00a1-\u00ff\u2022\u2026\u2027\u2150-\u218f])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 
 class Pangu {
-
   spacing(text) {
     if (typeof text !== 'string') {
       console.warn(`Pangu.spacing(text) only accepts string but got ${typeof text}`);
@@ -84,16 +88,16 @@ class Pangu {
     console.log(0, 'newText', newText);
 
     // https://stackoverflow.com/questions/4285472/multiple-regex-replace
-    newText = newText.replace(cjkSpaceSymbolsSpaceCjk, function(match, cjk1, space1, symbols, space2, cjk2) {
+    newText = newText.replace(cjkSpaceSymbolsSpaceCjk, (match, cjk1, space1, symbols, space2, cjk2) => {
       symbols = symbols.replace(/~/g, '～');
-      symbols = symbols.replace(/\!/g, '！');
+      symbols = symbols.replace(/!/g, '！');
       symbols = symbols.replace(/;/g, '；');
-      symbols = symbols.replace(/\:/g, '：');
+      symbols = symbols.replace(/:/g, '：');
       symbols = symbols.replace(/,/g, '，');
       symbols = symbols.replace(/\./g, '。');
       symbols = symbols.replace(/\?/g, '？');
 
-      return `${cjk1}${symbols}${cjk2}`
+      return `${cjk1}${symbols}${cjk2}`;
     });
     console.log(0, 'cjkSpaceSymbolsSpaceCjk', newText);
 
@@ -126,6 +130,12 @@ class Pangu {
 
     newText = newText.replace(ansCjk, '$1 $2');
     console.log(0, 'ansCjk', newText);
+
+    newText = newText.replace(anLeftSymbol, '$1 $2');
+    console.log(0, 'anLeftSymbol', newText);
+
+    newText = newText.replace(rightSymbolAn, '$1 $2');
+    console.log(0, 'rightSymbolAn', newText);
 
     // newText = newText.replace(cjkQuote, '$1 $2');
     // newText = newText.replace(quoteCJK, '$1 $2');
@@ -164,7 +174,6 @@ class Pangu {
       callback(err);
     }
   }
-
 }
 
 const pangu = new Pangu();
