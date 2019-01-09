@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "__MSG_extension_name__",
-    "version": "3.3.0",
+    "version": "4.0.0",
     "default_locale": "zh_TW",
     "description": "__MSG_extension_description__",
     "icons": {
@@ -28,8 +28,11 @@
                 "https://*/*",
                 "file:///*/*"
             ],
+            "css": [
+                "vendors/han/han.min.css"
+            ],
             "js": [
-                "vendors/pangu/pangu.min.js",
+                "vendors/han/han.min.js",
                 "js/content_script.js"
             ],
             "run_at": "document_idle",
