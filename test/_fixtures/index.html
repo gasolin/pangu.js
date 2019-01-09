@@ -1,10 +1,23 @@
-<html>
-  <head></head>
+<html lang="zh-Hant">
+  <head>
+    <link rel="stylesheet" media="all" href="https://cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.css">
+  </head>
   <body>
-    <script src="../../dist/browser/pangu.js"></script>
+    <!-- <script src="../../dist/browser/pangu.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Han/3.2.7/han.min.js"></script>
     <div>
         <p>當你凝視著bug，bug也凝視著你</p>
         <p>與PM戰鬥的人，應當小心自己不要成為PM</p>
     </div>
+    <script>
+        Han(document.body)
+        .initCond()
+        .renderElem()
+        .renderHanging()
+        .renderJiya()
+        .renderHWS()
+        .correctBasicBD()
+        .substCombLigaWithPUA()
+      </script>
   </body>
 </html>
