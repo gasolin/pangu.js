@@ -106,17 +106,12 @@ function can_spacing(tab) {
 }
 
 // 監聽來自 content_script.js 的訊息
-chrome.runtime.onMessage.addListener(
-  // https://crxdoc-zh.appspot.com/extensions/runtime.html#event-onMessage
-  function(message_obj, sender, sendResponse) {
-    var purpose = message_obj.purpose;
-    var result = null;
-
-    switch (purpose) {
-      case 'can_spacing':
-        result = can_spacing(sender.tab);
-        sendResponse({result: result});
-        break;
-    }
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+  switch (message.purpose) {
+    case 'can_spacing':
+      sendResponse({'result': can_spacing(sender.tab)});
+      break;
+    default:
+      sendResponse({'result': false});
   }
-);
+});

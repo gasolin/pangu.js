@@ -13,7 +13,8 @@ var entryPath = './src/browser/pangu.js';
 
 module.exports = {
   target: 'web',
-  mode: 'production',
+  // mode: 'production',
+  mode: 'development',
   entry: {
     'pangu': entryPath,
     'pangu.min': entryPath

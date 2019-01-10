@@ -37,7 +37,7 @@ const ansOperatorCjk = new RegExp(`([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([${cjk}]
 const hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 const hashAnsCjkHash = new RegExp(`([${cjk}])(#)([A-Za-z0-9\u2e80-\ufaff]+)(#)([${cjk}])`, 'g');
 const cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
-const cjkHash = new RegExp(`()(#([^ ]))`, 'g');
+// const cjkHash = new RegExp(`()(#([^ ]))`, 'g');
 const hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 const hashCjk = new RegExp(``, 'g');
 
@@ -102,6 +102,9 @@ class Pangu {
     if (!anyCjk.test(text)) {
       return text;
     }
+
+    function noop() {}
+    console.log = noop;
 
     let newText = text;
     console.log(0, 'newText', newText);

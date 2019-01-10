@@ -99,16 +99,21 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/browser/pangu.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "./src/browser/pangu.js":
+/*!******************************!*\
+  !*** ./src/browser/pangu.js ***!
+  \******************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! ../shared/core.js */ "./src/shared/core.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -348,7 +353,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 1 */
+
+/***/ "./src/shared/core.js":
+/*!****************************!*\
+  !*** ./src/shared/core.js ***!
+  \****************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -373,9 +383,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var a = 'A-Za-z';
   var n = '0-9';
   var anyCjk = new RegExp("[".concat(cjk, "]"));
-  var cjkSpaceSymbolsSpaceCjk = new RegExp("([".concat(cjk, "])([\\s]?)([~\\!;\\:,\\.\\?]+)([\\s]?)([").concat(cjk, "])"), 'g');
   var cjkOperatorAns = new RegExp("([".concat(cjk, "])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])"), 'g');
   var ansOperatorCjk = new RegExp("([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([".concat(cjk, "])"), 'g');
+  var hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var hashAnsCjkHash = new RegExp("([".concat(cjk, "])(#)([A-Za-z0-9\u2E80-\uFAFF]+)(#)([").concat(cjk, "])"), 'g');
+  var cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
+  var hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var hashCjk = new RegExp("", 'g');
   var fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
   var fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
   var cjkAnsCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'\",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
@@ -387,6 +401,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var ansCjk = new RegExp("([A-Za-z0-9])([".concat(cjk, "])"), 'g');
   var anLeftSymbol = new RegExp('([A-Za-z0-9])([\\(\\[\\{])', 'g');
   var rightSymbolAn = new RegExp('([\\)\\]\\}])([A-Za-z0-9])', 'g');
+  var cjkSpaceSymbolsSpaceCjk = new RegExp("([".concat(cjk, "])([ ]*)([~\\!;\\:,\\.\\?]+)([ ]*)([").concat(cjk, "])"), 'g');
 
   var Pangu = function () {
     function Pangu() {
@@ -405,6 +420,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return text;
         }
 
+        function noop() {}
+
+        console.log = noop;
         var newText = text;
         console.log(0, 'newText', newText);
         newText = newText.replace(cjkSpaceSymbolsSpaceCjk, function (match, cjk1, space1, symbols, space2, cjk2) {
@@ -456,6 +474,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           callback(err);
         }
       }
+    }, {
+      key: "spacingTextSync",
+      value: function spacingTextSync(text) {
+        return this.spacing(text);
+      }
     }]);
 
     return Pangu;
@@ -468,5 +491,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ })
-/******/ ]);
+
+/******/ });
 });

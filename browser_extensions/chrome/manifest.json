@@ -28,15 +28,12 @@
                 "https://*/*",
                 "file:///*/*"
             ],
-            "css": [
-                "vendors/han/han.min.css"
-            ],
             "js": [
-                "vendors/han/han.min.js",
+                "vendors/pangu/pangu.min.js",
                 "js/content_script.js"
             ],
             "run_at": "document_idle",
-            "all_frames": true
+            "all_frames": false
         }
     ],
     "minimum_chrome_version": "22.0",
