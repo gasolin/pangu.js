@@ -48,6 +48,8 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     return;
   }
 
+  pangu.spacingPage();
+
   var observer = new MutationObserver(function(mutations, observer) {
     var mutatedNodes = [];
 
