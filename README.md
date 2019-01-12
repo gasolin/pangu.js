@@ -61,9 +61,12 @@ $ npm install pangu --save
 </script>
 ```
 
-`pangu.js` is also available on [cdnjs](http://cdnjs.com/libraries/pangu):
+`pangu.js` is also available on [jsDelivr](https://www.jsdelivr.com/package/npm/pangu) and [cdnjs](https://cdnjs.com/libraries/pangu):
 
 ```html
+<script src="https://cdn.jsdelivr.net/npm/pangu@3.3.0/dist/browser/pangu.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pangu@3.3.0/dist/browser/pangu.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/3.3.0/pangu.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/3.3.0/pangu.min.js"></script>
 ```
@@ -104,7 +107,7 @@ $ npm run test
 
 ## License
 
-Released under the [MIT License](http://opensource.org/licenses/MIT).
+Released under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Author
 
@@ -116,7 +119,7 @@ Released under the [MIT License](http://opensource.org/licenses/MIT).
 
 - Atom: [atom-pangu](https://github.com/7kfpun/atom-pangu)
 - Command-line interface: [pangu-cli](https://github.com/SDLyu/pangu)
-- Emacs: [pangu-spacing](http://coldnew.github.io/blog/2013/05/20_5cbb7.html)
+- Emacs: [pangu-spacing](https://coldnew.github.io/d2d60fe2/)
 - Gulp: [gulp-pangu](https://github.com/7kfpun/gulp-pangu)
 - JavaScript: [为什么我就是能这样娴熟地加上空格呢？](https://github.com/Dustland/daft-auto-spacing)
 - Node.js: [pangu.node](https://github.com/huei90/pangu.node)
