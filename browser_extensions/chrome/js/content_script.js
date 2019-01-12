@@ -28,6 +28,10 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     return;
   }
 
+  // TODO: async.cargo()
+  // https://www.jsdelivr.com/package/npm/lodash
+  // https://www.jsdelivr.com/package/npm/async
+
   var mutatedNodes = [];
 
   throttledSpacingNodes = _.debounce(() => {
@@ -39,8 +43,6 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
       pangu.spacingNode(node);
     }
   }, 300, {'maxWait': 1000});
-
-  // TODO: async.cargo()
 
   pangu.spacingPage();
 
