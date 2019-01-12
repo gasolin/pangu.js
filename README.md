@@ -16,12 +16,12 @@
 
 ## Installation
 
-### for Users
+### For Users
 
 - [Google Chrome](https://chrome.google.com/webstore/detail/paphcfdffjnbcgkokihcdjliihicmbpd) (2016-12-28 updated)
 - [Mozilla Firefox](https://github.com/vinta/pangu.js/raw/master/browser_extensions/firefox/paranoid-auto-spacing.user.js) (2015-05-13 updated)
 
-### for Developers
+### For Developers
 
 - [pangu.dart](https://github.com/SemonCat/pangu.dart) (Dart)
 - [pangu.go](https://github.com/vinta/pangu) (Go)
