@@ -10,7 +10,7 @@ class BrowserPangu extends Pangu {
     super();
 
     this.topTags = /^(html|head|body|#document)$/i;
-    this.ignoreTags = /^(script|code|pre|textarea|iframe|pangu)$/i;
+    this.ignoreTags = /^(script|code|pre|textarea)$/i; // TODO: iframe|pangu
     this.spaceSensitiveTags = /^(a|del|pre|s|strike|u)$/i;
     this.spaceLikeTags = /^(br|hr|i|img|pangu)$/i;
     this.blockTags = /^(div|h1|h2|h3|h4|h5|h6|p)$/i;

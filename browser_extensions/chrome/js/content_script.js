@@ -41,7 +41,9 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   //     callback();
   // }, 1);
 
-  pangu.spacingPage();
+  setTimeout(() => {
+    pangu.spacingPage();
+  }, 1000);
 
   var mutatedNodes = [];
 
@@ -52,8 +54,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   // if there are more workers trigger by debounce means the processing is too slow
 
   debouncedSpacingNodes = _.debounce((workerName) => {
-    console.log('debouncedSpacingNodes', workerName);
-    console.log('start: mutatedNodes.length', mutatedNodes.length);
+    console.log(`${workerName} started: mutatedNodes.length`, mutatedNodes.length);
 
     // mutatedNodes = _.uniq(mutatedNodes);
     // console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
@@ -62,13 +63,16 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     while (mutatedNodes.length) {
       // console.log('process: mutatedNodes.length', mutatedNodes.length);
       var node = mutatedNodes.shift();
-      // console.log(node);
-      if (node && node.textContent) {
+      if (node && node.data) {
+        if (node.data.includes('奴隶区 The Animation')) {
+          console.dir(node);
+        }
+
         pangu.spacingNode(node);
       }
     }
 
-    // console.log('end: mutatedNodes.length', mutatedNodes.length);
+    console.log(`${workerName} finished`);
   }, 300, {'maxWait': 1000});
 
   let workerCounter = 1;
@@ -83,6 +87,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
           });
           break;
         case 'characterData':
+          // console.dir(mutation);
           mutatedNodes.push(mutation.target);
           break;
       }
