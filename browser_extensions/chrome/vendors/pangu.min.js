@@ -151,7 +151,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(BrowserPangu).call(this));
       _this.topTags = /^(html|head|body|#document)$/i;
-      _this.ignoreTags = /^(script|code|pre|textarea)$/i;
+      _this.ignoreTags = /^(script|code|pre|textarea|iframe|pangu)$/i;
       _this.spaceSensitiveTags = /^(a|del|pre|s|strike|u)$/i;
       _this.spaceLikeTags = /^(br|hr|i|img|pangu)$/i;
       _this.blockTags = /^(div|h1|h2|h3|h4|h5|h6|p)$/i;
@@ -420,9 +420,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return text;
         }
 
-        function noop() {}
-
-        console.log = noop;
         var newText = text;
         console.log(0, 'newText', newText);
         newText = newText.replace(cjkSpaceSymbolsSpaceCjk, function (match, cjk1, space1, symbols, space2, cjk2) {
@@ -435,31 +432,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           symbols = symbols.replace(/\?/g, '？');
           return "".concat(cjk1).concat(symbols).concat(cjk2);
         });
-        console.log(0, 'cjkSpaceSymbolsSpaceCjk', newText);
         newText = newText.replace(cjkOperatorAns, '$1 $2 $3');
-        console.log(0, 'cjkOperatorAns', newText);
         newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
-        console.log(0, 'ansOperatorCjk', newText);
         newText = newText.replace(fixSlashSpaceAns, '$1$3');
-        console.log(0, 'fixSlashSpaceAns', newText);
         newText = newText.replace(fixAnsSlashSpace, '$1$2$4');
-        console.log(0, 'fixAnsSlashSpace', newText);
         newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
-        console.log(0, 'cjkAnsCjk', newText);
         newText = newText.replace(cjkSpaceAnsCjk, '$1$2$3 $4');
-        console.log(0, 'cjkSpaceAnsCjk', newText);
         newText = newText.replace(cjkAnsSpaceCjk, '$1 $2$3$4');
-        console.log(0, 'cjkAnsSpaceCjk', newText);
         newText = newText.replace(cjkSymbolCjkAddLeftSpace, '$1 $2$3');
-        console.log(0, 'cjkSymbolCjkAddLeftSpace', newText);
         newText = newText.replace(cjkAns, '$1 $2');
-        console.log(0, 'cjkAns', newText);
         newText = newText.replace(ansCjk, '$1 $2');
-        console.log(0, 'ansCjk', newText);
         newText = newText.replace(anLeftSymbol, '$1 $2');
-        console.log(0, 'anLeftSymbol', newText);
         newText = newText.replace(rightSymbolAn, '$1 $2');
-        console.log(0, 'rightSymbolAn', newText);
         return newText;
       }
     }, {

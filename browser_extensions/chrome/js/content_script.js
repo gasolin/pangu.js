@@ -32,16 +32,30 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   // https://www.jsdelivr.com/package/npm/lodash
   // https://www.jsdelivr.com/package/npm/async
 
+  // TODO: Forced reflow while executing JavaScript took 136ms
+  // TODO: requestIdleCallback
+  // TODO: createTreeWalker
+
   var mutatedNodes = [];
 
-  throttledSpacingNodes = _.debounce(() => {
+  debouncedSpacingNodes = _.debounce(() => {
+    // console.log('debouncedSpacingNodes');
+    console.log('start: mutatedNodes.length', mutatedNodes.length);
+
+    mutatedNodes = _.uniq(mutatedNodes);
+    console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
+
+    // a single node could be very big which contains a lot of child nodes
     while (mutatedNodes.length) {
+      console.log('process: mutatedNodes.length', mutatedNodes.length);
       var node = mutatedNodes.shift();
-      if (!node || !node.textContent) {
-        continue;
+      console.log(node);
+      if (node && node.textContent) {
+        pangu.spacingNode(node);
       }
-      pangu.spacingNode(node);
     }
+
+    console.log('end: mutatedNodes.length', mutatedNodes.length);
   }, 300, {'maxWait': 1000});
 
   pangu.spacingPage();
@@ -66,7 +80,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     //   pangu.spacingNode(node);
     // });
 
-    // throttledSpacingNodes();
+    debouncedSpacingNodes();
   });
   observer.observe(document.body, {
     characterData: true,
