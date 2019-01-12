@@ -47,8 +47,8 @@
     "test:browser": "npm run build:browser && karma start",
     "test:node": "npm run build:node && mocha --require @babel/register test/node/",
     "test": "npm run test:shared && npm run test:browser && npm run test:node",
-    "watch:browser": "npm run test:browser -- --watch",
-    "watch:node": "npm run test:node -- --watch"
+    "watch:browser": "webpack --watch",
+    "watch:node": "babel src/node/ -d dist/node/ --watch"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",

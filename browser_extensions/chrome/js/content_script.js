@@ -28,7 +28,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     return;
   }
 
-  // TODO: async.cargo()
+  // TODO: async.queue()
   // https://www.jsdelivr.com/package/npm/lodash
   // https://www.jsdelivr.com/package/npm/async
 
@@ -39,29 +39,29 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   var mutatedNodes = [];
 
   debouncedSpacingNodes = _.debounce(() => {
-    // console.log('debouncedSpacingNodes');
+    console.log('debouncedSpacingNodes');
     console.log('start: mutatedNodes.length', mutatedNodes.length);
 
-    mutatedNodes = _.uniq(mutatedNodes);
-    console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
+    // mutatedNodes = _.uniq(mutatedNodes);
+    // console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
 
     // a single node could be very big which contains a lot of child nodes
     while (mutatedNodes.length) {
-      console.log('process: mutatedNodes.length', mutatedNodes.length);
+      // console.log('process: mutatedNodes.length', mutatedNodes.length);
       var node = mutatedNodes.shift();
-      console.log(node);
+      // console.log(node);
       if (node && node.textContent) {
         pangu.spacingNode(node);
       }
     }
 
-    console.log('end: mutatedNodes.length', mutatedNodes.length);
-  }, 300, {'maxWait': 1000});
+    // console.log('end: mutatedNodes.length', mutatedNodes.length);
+  }, 100, {'maxWait': 1000});
 
   pangu.spacingPage();
 
   var observer = new MutationObserver(function(mutations, observer) {
-    console.log('mutations.length', mutations.length);
+    // console.log('mutations.length', mutations.length);
 
     mutations.forEach(function(mutation) {
       switch (mutation.type) {

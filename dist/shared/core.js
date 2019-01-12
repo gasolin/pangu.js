@@ -14,9 +14,14 @@ var n = '0-9';
 var anyCjk = new RegExp("[".concat(cjk, "]"));
 var cjkOperatorAns = new RegExp("([".concat(cjk, "])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])"), 'g');
 var ansOperatorCjk = new RegExp("([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([".concat(cjk, "])"), 'g');
+var hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+var hashAnsCjkHash = new RegExp("([".concat(cjk, "])(#)([A-Za-z0-9\u2E80-\uFAFF]+)(#)([").concat(cjk, "])"), 'g');
+var cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
+var hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+var hashCjk = new RegExp("", 'g');
 var fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
 var fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
-var cjkAnsCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'\",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
+var cjkAnsCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:,\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
 var fixCjkColonA = new RegExp("([".concat(cjk, "])\\:([A-Z0-9])"), 'g');
 var cjkSpaceAnsCjk = new RegExp("([".concat(cjk, "])([\\s]+)([A-Za-z0-9`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'\",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
 var cjkAnsSpaceCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!#\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'\",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([").concat(cjk, "])"), 'g');
@@ -45,7 +50,6 @@ var Pangu = function () {
       }
 
       var newText = text;
-      console.log(0, 'newText', newText);
       newText = newText.replace(cjkSpaceSymbolsSpaceCjk, function (match, cjk1, space1, symbols, space2, cjk2) {
         symbols = symbols.replace(/~/g, '～');
         symbols = symbols.replace(/!/g, '！');
@@ -56,31 +60,18 @@ var Pangu = function () {
         symbols = symbols.replace(/\?/g, '？');
         return "".concat(cjk1).concat(symbols).concat(cjk2);
       });
-      console.log(0, 'cjkSpaceSymbolsSpaceCjk', newText);
       newText = newText.replace(cjkOperatorAns, '$1 $2 $3');
-      console.log(0, 'cjkOperatorAns', newText);
       newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
-      console.log(0, 'ansOperatorCjk', newText);
       newText = newText.replace(fixSlashSpaceAns, '$1$3');
-      console.log(0, 'fixSlashSpaceAns', newText);
       newText = newText.replace(fixAnsSlashSpace, '$1$2$4');
-      console.log(0, 'fixAnsSlashSpace', newText);
       newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
-      console.log(0, 'cjkAnsCjk', newText);
       newText = newText.replace(cjkSpaceAnsCjk, '$1$2$3 $4');
-      console.log(0, 'cjkSpaceAnsCjk', newText);
       newText = newText.replace(cjkAnsSpaceCjk, '$1 $2$3$4');
-      console.log(0, 'cjkAnsSpaceCjk', newText);
       newText = newText.replace(cjkSymbolCjkAddLeftSpace, '$1 $2$3');
-      console.log(0, 'cjkSymbolCjkAddLeftSpace', newText);
       newText = newText.replace(cjkAns, '$1 $2');
-      console.log(0, 'cjkAns', newText);
       newText = newText.replace(ansCjk, '$1 $2');
-      console.log(0, 'ansCjk', newText);
       newText = newText.replace(anLeftSymbol, '$1 $2');
-      console.log(0, 'anLeftSymbol', newText);
       newText = newText.replace(rightSymbolAn, '$1 $2');
-      console.log(0, 'rightSymbolAn', newText);
       return newText;
     }
   }, {

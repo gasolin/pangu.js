@@ -1,10 +1,9 @@
-import { Pangu } from '../shared/core.js';
+import { Pangu } from '../shared/core';
 
 // https://developer.mozilla.org/en/docs/Web/API/Node/nodeType
 const COMMENT_NODE_TYPE = 8;
 
 class BrowserPangu extends Pangu {
-
   constructor() {
     super();
 
@@ -234,7 +233,6 @@ class BrowserPangu extends Pangu {
     this.spacingPageTitle();
     this.spacingPageBody();
   }
-
 }
 
 const pangu = new BrowserPangu();

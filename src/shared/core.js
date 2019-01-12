@@ -44,8 +44,8 @@ const hashCjk = new RegExp(``, 'g');
 const fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
 const fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
 
-// The ans part does not include ` @ # _ |
-const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:'",\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
+// The ans part does not include ` @ # _ | ' "
+const cjkAnsCjk = new RegExp(`([${cjk}])([A-Za-z0-9\`~\\!\\$%\\^&\\*\\(\\)\\-\\=\\+\\[\\]\\{\\}\\\\;\\:,\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([${cjk}])`, 'g');
 
 const fixCjkColonA = new RegExp(`([${cjk}])\\:([A-Z0-9])`, 'g');
 
@@ -107,7 +107,7 @@ class Pangu {
     // console.log = noop;
 
     let newText = text;
-    console.log(0, 'newText', newText);
+    // console.log(0, 'newText', newText);
 
     // https://stackoverflow.com/questions/4285472/multiple-regex-replace
     newText = newText.replace(cjkSpaceSymbolsSpaceCjk, (match, cjk1, space1, symbols, space2, cjk2) => {
