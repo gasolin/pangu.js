@@ -1,57 +1,51 @@
-// var is_spacing = false; // 是不是正在插入空格？
-// var already_bind = false; // 是不是已經對 document 綁定過 event？
-// var node_hash = {}; // 避免同一個 DOM node 一直觸發 DOMSubtreeModified
+// var throttle = function(fn, delay, mustRunDelay) {
+//   var timer = null;
+//   var t_start;
+//   return function() {
+//     var self = this;
+//     var args = arguments;
+//     var t_curr = +new Date();
 
-// function go_page_spacing() {
-//   is_spacing = true;
-//   pangu.spacingPage();
-//   is_spacing = false;
-// }
+//     clearTimeout(timer);
 
-// function go_node_spacing(node) {
-//   if (!node.textContent) {
-//     return false;
-//   }
+//     if (!t_start) {
+//       t_start = t_curr;
+//     }
 
-//   is_spacing = true;
-//   pangu.spacingNode(node);
-//   is_spacing = false;
-// }
-
-var throttle = function(fn, delay, mustRunDelay) {
-  var timer = null;
-  var t_start;
-  return function() {
-    var context = this;
-    var args = arguments;
-    var t_curr = new Date();
-
-    clearTimeout(timer);
-
-    if (!t_start) {
-      t_start = t_curr;
-    }
-
-    if (t_curr - t_start >= mustRunDelay) {
-      fn.apply(context, args);
-      t_start = t_curr;
-    } else {
-      timer = setTimeout(function() {
-        fn.apply(context, args);
-      }, delay);
-    }
-  };
-};
+//     if (t_curr - t_start >= mustRunDelay) {
+//       fn.apply(self, args);
+//       t_start = t_curr;
+//     } else {
+//       timer = setTimeout(function() {
+//         fn.apply(self, args);
+//       }, delay);
+//     }
+//   };
+// };
 
 chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   if (!response.result) {
     return;
   }
 
+  var mutatedNodes = [];
+
+  throttledSpacingNodes = _.debounce(() => {
+    while (mutatedNodes.length) {
+      var node = mutatedNodes.shift();
+      if (!node || !node.textContent) {
+        continue;
+      }
+      pangu.spacingNode(node);
+    }
+  }, 300, {'maxWait': 1000});
+
+  // TODO: async.cargo()
+
   pangu.spacingPage();
 
   var observer = new MutationObserver(function(mutations, observer) {
-    var mutatedNodes = [];
+    console.log('mutations.length', mutations.length);
 
     mutations.forEach(function(mutation) {
       switch (mutation.type) {
@@ -66,9 +60,11 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
       }
     });
 
-    mutatedNodes.forEach((node) => {
-      pangu.spacingNode(node);
-    });
+    // mutatedNodes.forEach((node) => {
+    //   pangu.spacingNode(node);
+    // });
+
+    // throttledSpacingNodes();
   });
   observer.observe(document.body, {
     characterData: true,

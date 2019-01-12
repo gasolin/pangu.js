@@ -29,7 +29,9 @@
                 "file:///*/*"
             ],
             "js": [
-                "vendors/pangu/pangu.min.js",
+                "vendors/lodash.min.js",
+                "vendors/async.min.js",
+                "vendors/pangu.min.js",
                 "js/content_script.js"
             ],
             "run_at": "document_idle",
