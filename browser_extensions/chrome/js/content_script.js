@@ -36,12 +36,23 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   // TODO: requestIdleCallback
   // TODO: createTreeWalker
 
+  // var queue = async.queue(function(node, callback) {
+  //     console.log('node', node);
+  //     callback();
+  // }, 1);
+
   pangu.spacingPage();
 
   var mutatedNodes = [];
 
-  debouncedSpacingNodes = _.debounce(() => {
-    console.log('debouncedSpacingNodes');
+  // TODO
+  // put every node into a queue
+  // and make sure there is only one worker to process the queue?
+  // it seems is ok to have many workers?
+  // if there are more workers trigger by debounce means the processing is too slow
+
+  debouncedSpacingNodes = _.debounce((workerName) => {
+    console.log('debouncedSpacingNodes', workerName);
     console.log('start: mutatedNodes.length', mutatedNodes.length);
 
     // mutatedNodes = _.uniq(mutatedNodes);
@@ -60,6 +71,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     // console.log('end: mutatedNodes.length', mutatedNodes.length);
   }, 300, {'maxWait': 1000});
 
+  let workerCounter = 1;
   var observer = new MutationObserver(function(mutations, observer) {
     // console.log('mutations.length', mutations.length);
 
@@ -76,7 +88,8 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
       }
     });
 
-    debouncedSpacingNodes();
+    debouncedSpacingNodes(`worker${workerCounter}`);
+    workerCounter += 1;
   });
   observer.observe(document.body, {
     characterData: true,

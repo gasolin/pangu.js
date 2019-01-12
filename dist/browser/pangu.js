@@ -416,7 +416,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return text;
         }
 
-        if (!anyCjk.test(text)) {
+        if (text.length <= 1 || !anyCjk.test(text)) {
           return text;
         }
 

@@ -1,5 +1,7 @@
 import { Pangu } from '../shared/core';
 
+// const _ = require('lodash');
+
 // https://developer.mozilla.org/en/docs/Web/API/Node/nodeType
 const COMMENT_NODE_TYPE = 8;
 
@@ -233,6 +235,63 @@ class BrowserPangu extends Pangu {
     this.spacingPageTitle();
     this.spacingPageBody();
   }
+
+  // autoSpacingNode(rootNode) {
+
+  // }
+
+  // autoSpacingPage() {
+  //   this.spacingPage();
+
+  //   let mutatedNodes = [];
+
+  //   const debouncedSpacingNodes = _.debounce(() => {
+  //     console.log('debouncedSpacingNodes');
+  //     console.log('start: mutatedNodes.length', mutatedNodes.length);
+
+  //     // mutatedNodes = _.uniq(mutatedNodes);
+  //     // console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
+
+  //     // a single node could be very big which contains a lot of child nodes
+  //     while (mutatedNodes.length) {
+  //       // console.log('process: mutatedNodes.length', mutatedNodes.length);
+  //       const node = mutatedNodes.shift();
+  //       // console.log(node);
+  //       if (node && node.textContent) {
+  //         pangu.spacingNode(node);
+  //       }
+  //     }
+
+  //     // console.log('end: mutatedNodes.length', mutatedNodes.length);
+  //   }, 300, { maxWait: 1000 });
+
+  //   const observer = new MutationObserver((mutations, observer) => {
+  //     // console.log('mutations.length', mutations.length);
+
+  //     mutations.forEach((mutation) => {
+  //       switch (mutation.type) {
+  //       case 'childList':
+  //         mutation.addedNodes.forEach((node) => {
+  //           mutatedNodes.push(node);
+  //           queue.push(node);
+  //         });
+  //         break;
+  //       case 'characterData':
+  //         mutatedNodes.push(mutation.target);
+  //         break;
+  //       default:
+  //         break;
+  //       }
+  //     });
+
+  //     debouncedSpacingNodes();
+  //   });
+  //   observer.observe(document.body, {
+  //     characterData: true,
+  //     childList: true,
+  //     subtree: true,
+  //   });
+  // }
 }
 
 const pangu = new BrowserPangu();

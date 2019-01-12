@@ -99,7 +99,7 @@ class Pangu {
       return text;
     }
 
-    if (!anyCjk.test(text)) {
+    if (text.length <= 1 || !anyCjk.test(text)) {
       return text;
     }
 
