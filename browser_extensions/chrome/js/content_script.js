@@ -36,6 +36,8 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   // TODO: requestIdleCallback
   // TODO: createTreeWalker
 
+  pangu.spacingPage();
+
   var mutatedNodes = [];
 
   debouncedSpacingNodes = _.debounce(() => {
@@ -56,9 +58,7 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     }
 
     // console.log('end: mutatedNodes.length', mutatedNodes.length);
-  }, 100, {'maxWait': 1000});
-
-  pangu.spacingPage();
+  }, 300, {'maxWait': 1000});
 
   var observer = new MutationObserver(function(mutations, observer) {
     // console.log('mutations.length', mutations.length);
@@ -75,10 +75,6 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
           break;
       }
     });
-
-    // mutatedNodes.forEach((node) => {
-    //   pangu.spacingNode(node);
-    // });
 
     debouncedSpacingNodes();
   });
