@@ -130,6 +130,10 @@ class Pangu {
     // function noop() {}
     // console.log = noop;
 
+    if (text.includes('冰與火之歌》中維斯特洛7')) {
+      console.log('core', text);
+    }
+
     let newText = text;
     // console.log(0, 'newText', newText);
 

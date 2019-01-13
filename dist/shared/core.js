@@ -55,6 +55,11 @@ var Pangu = function () {
       }
 
       var self = this;
+
+      if (text.includes('冰與火之歌》中維斯特洛7')) {
+        console.log('core', text);
+      }
+
       var newText = text;
       newText = newText.replace(convertToFullwidthCjkSpaceSymbolsSpaceCjk, function (match, leftCjk, symbols, rightCjk) {
         var fullwidthSymbols = self.convertToFullwidth(symbols);

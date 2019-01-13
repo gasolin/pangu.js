@@ -10,8 +10,8 @@ var DEFAULT_SETTINGS = {
   'spacing_rule': 'blacklists', // or whitelists
   'blacklists': [
     '//drive.google.com',
-    '//docs.google.com',
-    '&tbm=isch'
+    '//docs.google.com'
+    // '&tbm=isch'
   ],
   'whitelists': [],
   'is_mute': false

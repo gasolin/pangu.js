@@ -44,9 +44,17 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     while (queue.length) {
       var node = queue.shift();
       if (node) {
-        // TODO: there could be node.textContent or node.data
-        pangu.spacingNode(node);
+        if (node.nodeType == Node.TEXT_NODE) {
+          console.dir(node);
+          // node.data = pangu.spacingTextSync(node.data);
+          // pangu.spacingNode(node);
+        } else {
+          pangu.spacingNode(node);
+        }
+        // // TODO: there could be node.textContent or node.data
+        // pangu.spacingNode(node);
       }
+
     }
   }, 500, {'maxWait': 2000});
 
@@ -54,6 +62,8 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     // Element: https://developer.mozilla.org/en-US/docs/Web/API/Element
     // Text: https://developer.mozilla.org/en-US/docs/Web/API/Text
     mutations.forEach(function(mutation) {
+      // console.dir(mutation);
+
       switch (mutation.type) {
         case 'childList':
           mutation.addedNodes.forEach(function(node) {
@@ -67,7 +77,8 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
         case 'characterData':
           const node = mutation.target;
           if (node.nodeType === Node.TEXT_NODE) {
-            queue.push(node.parentNode);
+            // queue.push(node.parentNode);
+            queue.push(node);
           }
           break;
       }

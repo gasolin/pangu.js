@@ -2,6 +2,8 @@ const assert = require('chai').assert;
 
 const pangu = require('../../dist/shared/core');
 
+// assert.equal(pangu.spacing('{"clt":"n","cr":3,"id":"hPTAJJFRWqGOIM:","isu":"getit01.com","itg":0,"ity":"jpg","oh":477,"ou":"https://i1.wp.com/pic3.zhimg.com/50/881ea5fb247a5fe54bbc456676380fac_hd.jpg","ow":710,"pt":"冰與火之歌》中維斯特洛7 大王國的面積大概有多大？ - GetIt01","rh":"getit01.com","rid":"TDbYkxZPPW--hM","rt":0,"ru":"https://www.getit01.com/p20180124820895144/","s":"下面貼出9M高清冰與火世界地圖和當今世界地圖供題主比對，這樣可以對冰火世界產生更加形象的認識。","st":"GetIt01","th":184,"tu":"https://encrypted-tbn0.gstatic.com/images?q\u003dtbn:ANd9GcS--ooboNW8vMCjWNsp6OG0hZ_SacHEMsK0lA38ah11kGcnZHOmLg","tw":274}'), '前面_後面');
+
 describe('Pangu', () => {
   describe('spacing()', () => {
     // 略過
