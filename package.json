@@ -33,14 +33,14 @@
   "main": "./dist/node/index.js",
   "browser": "./dist/browser/pangu.js",
   "scripts": {
-    "pack:chrome": "cp -rf ./dist/browser/pangu.min.js ./browser_extensions/chrome/vendors/pangu.min.js && cd ./browser_extensions/chrome/ && zip -q -r -0 ../paranoid-auto-spacing.zip .",
+    "pack:chrome": "npm run build:browser && cp -rf ./dist/browser/pangu.min.js ./browser_extensions/chrome/vendors/pangu.min.js && cd ./browser_extensions/chrome/ && zip -q -r -0 ../paranoid-auto-spacing.zip .",
     "pack": "npm run pack:chrome",
     "clear:shared": "rm -rf ./dist/shared/",
     "clear:browser": "rm -rf ./dist/browser/",
     "clear:node": "rm -rf ./dist/node/",
     "clear": "npm run clear:shared && npm run clear:browser && npm run clear:node",
     "build:shared": "npm run clear:shared && babel src/shared/ -d dist/shared/",
-    "build:browser": "npm run clear:browser && webpack && npm run pack",
+    "build:browser": "npm run clear:browser && webpack",
     "build:node": "npm run clear:node && babel src/node/ -d dist/node/",
     "build": "npm run build:shared && npm run build:browser && npm run build:node",
     "test:shared": "npm run build:shared && mocha --require @babel/register test/shared/",
@@ -48,8 +48,8 @@
     "test:node": "npm run build:node && mocha --require @babel/register test/node/",
     "test": "npm run test:shared && npm run test:browser && npm run test:node",
     "watch:shared": "watch 'npm run test:shared' src/shared test/shared/",
-    "watch:browser": "watch 'npm run test:browser' src/browser test/browser/",
-    "watch:node": "watch 'npm run test:node' src/node test/node/"
+    "watch:browser": "watch 'npm run test:browser' src/shared src/browser test/browser/",
+    "watch:node": "watch 'npm run test:node' src/shared src/node test/node/"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",

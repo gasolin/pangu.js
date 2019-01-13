@@ -93,6 +93,7 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面%後面'), '前面 % 後面');
       assert.equal(pangu.spacing('前面 % 後面'), '前面 % 後面');
       assert.equal(pangu.spacing('前面100%後面'), '前面 100% 後面');
+      assert.equal(pangu.spacing('新八的構造成分有95%是眼鏡、3%是水、2%是垃圾'), '新八的構造成分有 95% 是眼鏡、3% 是水、2% 是垃圾');
     });
 
     it('處理 ^ 符號', () => {
@@ -304,6 +305,7 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('head (中文123漢字) tail'), 'head (中文 123 漢字) tail');
       assert.equal(pangu.spacing('(or simply "React")'), '(or simply "React")');
       assert.equal(pangu.spacing("OperationalError: (2006, 'MySQL server has gone away')"), "OperationalError: (2006, 'MySQL server has gone away')");
+      assert.equal(pangu.spacing('我看过的电影(1404)'), '我看过的电影 (1404)');
     });
 
     it('處理 { } 符號', () => {
