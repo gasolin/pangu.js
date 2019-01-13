@@ -56,14 +56,11 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   debouncedSpacingNodes = _.debounce((workerName) => {
     console.log(`${workerName} started: mutatedNodes.length`, mutatedNodes.length);
 
-    // mutatedNodes = _.uniq(mutatedNodes);
-    // console.log('de-dup: mutatedNodes.length', mutatedNodes.length);
-
     // a single node could be very big which contains a lot of child nodes
     while (mutatedNodes.length) {
-      // console.log('process: mutatedNodes.length', mutatedNodes.length);
       var node = mutatedNodes.shift();
-      if (node && node.data) {
+      if (node) {
+        // TODO: there could be node.textContent or node.data
         pangu.spacingNode(node);
       }
     }
@@ -73,19 +70,24 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
 
   let workerCounter = 1;
   var observer = new MutationObserver(function(mutations, observer) {
+    // Element: https://developer.mozilla.org/en-US/docs/Web/API/Element
+    // Text: https://developer.mozilla.org/en-US/docs/Web/API/Text
     mutations.forEach(function(mutation) {
       switch (mutation.type) {
         case 'childList':
           mutation.addedNodes.forEach(function(node) {
-            if (node.nodeType === 3) { // Node.TEXT_NODE
-              mutatedNodes.push(node.parentNode);
-            } else {
+            if (node.nodeType === Node.ELEMENT_NODE) {
               mutatedNodes.push(node);
+            } else if (node.nodeType === Node.TEXT_NODE) {
+              mutatedNodes.push(node.parentNode);
             }
           });
           break;
         case 'characterData':
-          mutatedNodes.push(mutation.target.parentNode);
+          const node = mutation.target;
+          if (node.nodeType === Node.TEXT_NODE) {
+            mutatedNodes.push(node.parentNode);
+          }
           break;
       }
     });
