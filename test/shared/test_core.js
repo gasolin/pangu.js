@@ -9,6 +9,8 @@ describe('Pangu', () => {
     it('略過 _ 符號', () => {
       assert.equal(pangu.spacing('前面_後面'), '前面_後面');
       assert.equal(pangu.spacing('前面 _ 後面'), '前面 _ 後面');
+      assert.equal(pangu.spacing('Vinta_Mollie'), 'Vinta_Mollie');
+      assert.equal(pangu.spacing('Vinta _ Mollie'), 'Vinta _ Mollie');
     });
 
     // 兩邊都加空格
@@ -152,7 +154,7 @@ describe('Pangu', () => {
     });
 
     it('處理 | 符號', () => {
-      assert.equal(pangu.spacing('前面|後面'), '前面|後面');
+      assert.equal(pangu.spacing('前面|後面'), '前面 | 後面');
       assert.equal(pangu.spacing('前面 | 後面'), '前面 | 後面');
       assert.equal(pangu.spacing('Vinta|Mollie'), 'Vinta|Mollie');
       assert.equal(pangu.spacing('Vinta|陳上進'), 'Vinta | 陳上進');
@@ -197,18 +199,18 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('得到一個A>B的結果'), '得到一個 A>B 的結果');
     });
 
-    // // \u2027
-    // it('處理 ‧ 符號', () => {
-    //   assert.equal(pangu.spacing('前面‧後面'), '前面 ‧ 後面');
-    // });
+    // \u2027
+    it('處理 ‧ 符號', () => {
+      assert.equal(pangu.spacing('前面‧後面'), '前面 ‧ 後面');
+    });
 
     // 只加右空格
 
-    // // \u2026
-    // it('處理 … 符號', () => {
-    //   assert.equal(pangu.spacing('前面…後面'), '前面… 後面');
-    //   assert.equal(pangu.spacing('前面……後面'), '前面…… 後面');
-    // });
+    // \u2026
+    it('處理 … 符號', () => {
+      assert.equal(pangu.spacing('前面…後面'), '前面… 後面');
+      assert.equal(pangu.spacing('前面……後面'), '前面…… 後面');
+    });
 
     // 只加左空格
 
@@ -219,14 +221,14 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('請@陳上進 吃大便'), '請 @陳上進 吃大便');
     });
 
-    // it('處理 # 符號', () => {
-    //   assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
-    //   assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
-    //   assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
-    //   assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-    //   assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-    //   assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
-    // });
+    it('處理 # 符號', () => {
+      assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
+      assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
+      assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
+      assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+      assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+      assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
+    });
 
     // 換成全形符號
 
@@ -260,7 +262,7 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面:)後面'), '前面：) 後面');
       assert.equal(pangu.spacing('前面:I have no idea後面'), '前面：I have no idea 後面');
       assert.equal(pangu.spacing('前面: I have no idea後面'), '前面: I have no idea 後面');
-      assert.equal(pangu.spacing('前面:poop:後面'), '前面 :poop: 後面');
+      // assert.equal(pangu.spacing('前面:poop:後面'), '前面 :poop: 後面');
     });
 
     it('處理 , 符號', () => {
@@ -283,6 +285,7 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面 ? 後面'), '前面？後面');
       assert.equal(pangu.spacing('前面? 後面'), '前面？後面');
       assert.equal(pangu.spacing('前面 ?後面'), '前面？後面');
+      assert.equal(pangu.spacing('所以，請問Jackey的鼻子有幾個?3.14個'), '所以，請問 Jackey 的鼻子有幾個？3.14 個');
     });
 
     // 成對符號：相異
@@ -326,41 +329,41 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('head [中文123漢字] tail'), 'head [中文 123 漢字] tail');
     });
 
-    it('處理 “ ” 符號', () => {
-      // \u201c and \u201d
+    it('處理 “ ” \\u201c \\u201d 符號', () => {
       assert.equal(pangu.spacing('前面“中文123漢字”後面'), '前面 “中文 123 漢字” 後面');
     });
 
     // 成對符號：相同
 
-    // it('處理 # # 符號', () => {
-    //   assert.equal(pangu.spacing('前面#H2G2#後面'), '前面 #H2G2# 後面');
-    //   assert.equal(pangu.spacing('前面#銀河閃電霹靂車指南#後面'), '前面 #銀河閃電霹靂車指南# 後面');
-    // });
+    it('處理 ` ` 符號', () => {
+      assert.equal(pangu.spacing('前面`後面'), '前面`後面');
+      assert.equal(pangu.spacing('前面`中間`後面'), '前面 `中間` 後面');
+    });
 
-    // it('處理 ` ` 符號', () => {
-    //   assert.equal(pangu.spacing('前面`後面'), '前面`後面');
-    //   assert.equal(pangu.spacing('前面`中間`後面'), '前面 `中間` 後面');
-    // });
+    it('處理 # # 符號', () => {
+      assert.equal(pangu.spacing('前面#H2G2#後面'), '前面 #H2G2# 後面');
+      assert.equal(pangu.spacing('前面#銀河閃電霹靂車指南#後面'), '前面 #銀河閃電霹靂車指南# 後面');
+    });
 
-    // it('處理 " " 符號', () => {
-    //   assert.equal(pangu.spacing('前面"中文123漢字"後面'), '前面 "中文 123 漢字" 後面');
-    //   assert.equal(pangu.spacing('前面"中文123"後面'), '前面 "中文 123" 後面');
-    //   assert.equal(pangu.spacing('前面"123漢字"後面'), '前面 "123 漢字" 後面');
-    //   assert.equal(pangu.spacing('前面"中文123" tail'), '前面 "中文 123" tail');
-    //   assert.equal(pangu.spacing('head "中文123漢字"後面'), 'head "中文 123 漢字" 後面');
-    //   assert.equal(pangu.spacing('head "中文123漢字" tail'), 'head "中文 123 漢字" tail');
-    // });
+    it('處理 " " 符號', () => {
+      assert.equal(pangu.spacing('前面"中文123漢字"後面'), '前面 "中文 123 漢字" 後面');
+      assert.equal(pangu.spacing('前面"中文123"後面'), '前面 "中文 123" 後面');
+      assert.equal(pangu.spacing('前面"123漢字"後面'), '前面 "123 漢字" 後面');
+      assert.equal(pangu.spacing('前面"中文123" tail'), '前面 "中文 123" tail');
+      assert.equal(pangu.spacing('head "中文123漢字"後面'), 'head "中文 123 漢字" 後面');
+      assert.equal(pangu.spacing('head "中文123漢字" tail'), 'head "中文 123 漢字" tail');
+    });
 
-    // it("處理 ' ' 符號", () => {
-    //   assert.equal(pangu.spacing("陳上進 likes 林依諾's status."), "陳上進 likes 林依諾's status.");
-    //   assert.equal(pangu.spacing("举个栗子，如果一道题只包含'A' ~ 'Z'意味着字符集大小是"), "举个栗子，如果一道题只包含 'A' ~ 'Z' 意味着字符集大小是");
-    // });
+    it("處理 ' ' 符號", () => {
+      assert.equal(pangu.spacing("Why are Python's 'private' methods not actually private?"), "Why are Python's 'private' methods not actually private?");
+      assert.equal(pangu.spacing("陳上進 likes 林依諾's status."), "陳上進 likes 林依諾's status.");
+      assert.equal(pangu.spacing("举个栗子，如果一道题只包含'A' ~ 'Z'意味着字符集大小是"), "举个栗子，如果一道题只包含 'A' ~ 'Z' 意味着字符集大小是");
+    });
 
-    // it('處理 “ “ 符號', () => {
-    //   assert.equal(pangu.spacing('前面“後面'), '前面“後面');
-    //   assert.equal(pangu.spacing('前面“中間“後面'), '前面 “中間“ 後面');
-    // });
+    it('處理 ״ ״ \\u05f4 \\u05f4 符號', () => {
+      assert.equal(pangu.spacing('前面״後面'), '前面״後面');
+      assert.equal(pangu.spacing('前面״中間״後面'), '前面 ״中間״ 後面');
+    });
   });
 
   describe('spacingText()', () => {

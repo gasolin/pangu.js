@@ -385,21 +385,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   var anyCjk = new RegExp("[".concat(cjk, "]"));
   var replaceToFullwidthCjkSpaceSymbolsSpaceCjk = new RegExp("([".concat(cjk, "])([ ]*)([~\\!;\\:,\\.\\?]+)([ ]*)([").concat(cjk, "])"), 'g');
   var fixCjkColonAns = new RegExp("([".concat(cjk, "])\\:([A-Z0-9\\(\\)])"), 'g');
-  var cjkOperatorAns = new RegExp("([".concat(cjk, "])([\\+\\-\\*\\/=&\\|<>])([A-Za-z0-9])"), 'g');
-  var ansOperatorCjk = new RegExp("([A-Za-z0-9])([\\+\\-\\*\\/=&\\|<>])([".concat(cjk, "])"), 'g');
-  var fixSlashSpaceAns = new RegExp('([\\/])( )([a-z0-9\\-_\\.\\/]+)', 'g');
-  var fixAnsSlashSpace = new RegExp('([\\/\\.])([A-Za-z0-9\\-_\\.\\/]+)( )([\\/])', 'g');
-  var cjkAnsCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!\\$%\\^&\\*\\-\\=\\+\\\\;\\:,\\<\\.\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
-  var cjkSpaceAnsCjk = new RegExp("([".concat(cjk, "])([\\s]+)([A-Za-z0-9`~\\!#\\$%\\^&\\*\\-\\=\\+\\\\;\\:'\",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([").concat(cjk, "])"), 'g');
-  var cjkAnsSpaceCjk = new RegExp("([".concat(cjk, "])([A-Za-z0-9`~\\!#\\$%\\^&\\*\\-\\=\\+\\\\;\\:'\",\\<\\>\\/\\?\\u00a1-\\u00ff\\u2022\\u2027\\u2150-\\u218f]+)([\\s]+)([").concat(cjk, "])"), 'g');
-  var cjkSymbolCjkAddLeftSpace = new RegExp("([".concat(cjk, "])([@])([").concat(cjk, "])"), 'g');
-  var anLeftSymbol = new RegExp('([A-Za-z0-9])([\\(\\[\\{])', 'g');
-  var rightSymbolAn = new RegExp('([\\)\\]\\}])([A-Za-z0-9])', 'g');
-  var cjkLeftBracket = new RegExp("([".concat(cjk, "])([\\(\\[\\{\\<\u201C])"), 'g');
-  var rightBracketCjk = new RegExp("([\\)\\]\\}\\>\u201D])([".concat(cjk, "])"), 'g');
+  var cjkQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(["])/g;
+  var quoteCJK = /(["])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var fixQuote = /(["']+)(\s*)(.+?)(\s*)(["']+)/g;
+  var fixSingleQuote = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])( )(')([A-Za-z])/g;
+  var hashANSCJKhash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#)([A-Za-z0-9\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]+)(#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var cjkHash = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])(#([^ ]))/g;
+  var hashCJK = /(([^ ])#)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var cjkOperatorAns = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\+\-\*\/=&\\|<>])([A-Za-z0-9])/g;
+  var ansOperatorCjk = /([A-Za-z0-9])([\+\-\*\/=&\\|<>])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var cjkBracketCJK = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c]+(.*?)[\)\]\}>\u201d]+)([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var cjkBracket = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([\(\[\{<\u201c>])/g;
+  var bracketCJK = /([\)\]\}>\u201d<])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
   var leftBracketAnyRightBracket = /([\(\[\{<\u201c]+)(\s*)(.+?)(\s*)([\)\]\}>\u201d]+)/;
-  var cjkAns = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([A-Za-z0-9`\$%\^&\*\-=\+\\\|/@\u00a1-\u00ff\u2022\u2027\u2150-\u218f])/g;
-  var ansCjk = /([A-Za-z0-9`~\$%\^&\*\-=\+\\\|/!;:,\.\?\u00a1-\u00ff\u2022\u2026\u2027\u2150-\u218f])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
+  var fixSymbol = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([~!;:,\.\?\u2026])([A-Za-z0-9])/g;
+  var cjkANS = /([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])([A-Za-z0-9`\$%\^&\*\-=\+\\\|/@\u00a1-\u00ff\u2022\u2027\u2150-\u218f])/g;
+  var ansCJK = /([A-Za-z0-9`~\$%\^&\*\-=\+\\\|/!;:,\.\?\u00a1-\u00ff\u2022\u2026\u2027\u2150-\u218f])([\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff])/g;
 
   var Pangu = function () {
     function Pangu() {
@@ -430,19 +431,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           return "".concat(cjk1).concat(symbols).concat(cjk2);
         });
         newText = newText.replace(fixCjkColonAns, '$1：$2');
-        newText = newText.replace(cjkOperatorAns, '$1 $2 $3');
-        newText = newText.replace(ansOperatorCjk, '$1 $2 $3');
-        newText = newText.replace(fixSlashSpaceAns, '$1$3');
-        newText = newText.replace(fixAnsSlashSpace, '$1$2$4');
-        newText = newText.replace(cjkAnsCjk, '$1 $2 $3');
-        newText = newText.replace(cjkSymbolCjkAddLeftSpace, '$1 $2$3');
-        newText = newText.replace(anLeftSymbol, '$1 $2');
-        newText = newText.replace(rightSymbolAn, '$1 $2');
-        newText = newText.replace(cjkLeftBracket, '$1 $2');
-        newText = newText.replace(rightBracketCjk, '$1 $2');
+        newText = newText.replace(cjkQuote, '$1 $2');
+        newText = newText.replace(quoteCJK, '$1 $2');
+        newText = newText.replace(fixQuote, '$1$3$5');
+        newText = newText.replace(fixSingleQuote, '$1$3$4');
+        newText = newText.replace(hashANSCJKhash, '$1 $2$3$4 $5');
+        newText = newText.replace(cjkHash, '$1 $2');
+        newText = newText.replace(hashCJK, '$1 $3');
+        var oldText = newText;
+        var tmpText = newText.replace(cjkBracketCJK, '$1 $2 $4');
+        newText = tmpText;
+
+        if (oldText === tmpText) {
+          newText = newText.replace(cjkBracket, '$1 $2');
+          newText = newText.replace(bracketCJK, '$1 $2');
+        }
+
         newText = newText.replace(leftBracketAnyRightBracket, '$1$3$5');
-        newText = newText.replace(cjkAns, '$1 $2');
-        newText = newText.replace(ansCjk, '$1 $2');
+        newText = newText.replace(cjkANS, '$1 $2');
+        newText = newText.replace(ansCJK, '$1 $2');
         return newText;
       }
     }, {
