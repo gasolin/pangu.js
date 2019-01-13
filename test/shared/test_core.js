@@ -256,10 +256,10 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('前面: 後面'), '前面：後面');
       assert.equal(pangu.spacing('前面 :後面'), '前面：後面');
       assert.equal(pangu.spacing('電話:123456789'), '電話：123456789');
-      assert.equal(pangu.spacing('前面:) 後面'), '前面 :) 後面');
-      assert.equal(pangu.spacing('前面:poop:後面'), '前面 :poop: 後面');
+      assert.equal(pangu.spacing('前面:)後面'), '前面：) 後面');
       assert.equal(pangu.spacing('前面:I have no idea後面'), '前面：I have no idea 後面');
       assert.equal(pangu.spacing('前面: I have no idea後面'), '前面: I have no idea 後面');
+      assert.equal(pangu.spacing('前面:poop:後面'), '前面 :poop: 後面');
     });
 
     it('處理 , 符號', () => {
@@ -286,48 +286,48 @@ describe('Pangu', () => {
 
     // 成對符號：相異
 
-    // it('處理 < > 符號', () => {
-    //   assert.equal(pangu.spacing('前面<中文123漢字>後面'), '前面 <中文 123 漢字> 後面');
-    //   assert.equal(pangu.spacing('前面<中文123>後面'), '前面 <中文 123> 後面');
-    //   assert.equal(pangu.spacing('前面<123漢字>後面'), '前面 <123 漢字> 後面');
-    //   assert.equal(pangu.spacing('前面<中文123> tail'), '前面 <中文 123> tail');
-    //   assert.equal(pangu.spacing('head <中文123漢字>後面'), 'head <中文 123 漢字> 後面');
-    //   assert.equal(pangu.spacing('head <中文123漢字> tail'), 'head <中文 123 漢字> tail');
-    // });
+    it('處理 < > 符號', () => {
+      assert.equal(pangu.spacing('前面<中文123漢字>後面'), '前面 <中文 123 漢字> 後面');
+      assert.equal(pangu.spacing('前面<中文123>後面'), '前面 <中文 123> 後面');
+      assert.equal(pangu.spacing('前面<123漢字>後面'), '前面 <123 漢字> 後面');
+      assert.equal(pangu.spacing('前面<中文123> tail'), '前面 <中文 123> tail');
+      assert.equal(pangu.spacing('head <中文123漢字>後面'), 'head <中文 123 漢字> 後面');
+      assert.equal(pangu.spacing('head <中文123漢字> tail'), 'head <中文 123 漢字> tail');
+    });
 
-    // it('處理 ( ) 符號', () => {
-    //   assert.equal(pangu.spacing('前面(中文123漢字)後面'), '前面 (中文 123 漢字) 後面');
-    //   assert.equal(pangu.spacing('前面(中文123)後面'), '前面 (中文 123) 後面');
-    //   assert.equal(pangu.spacing('前面(123漢字)後面'), '前面 (123 漢字) 後面');
-    //   assert.equal(pangu.spacing('前面(中文123) tail'), '前面 (中文 123) tail');
-    //   assert.equal(pangu.spacing('head (中文123漢字)後面'), 'head (中文 123 漢字) 後面');
-    //   assert.equal(pangu.spacing('head (中文123漢字) tail'), 'head (中文 123 漢字) tail');
-    //   assert.equal(pangu.spacing('(or simply "React")'), '(or simply "React")');
-    //   assert.equal(pangu.spacing("OperationalError: (2006, 'MySQL server has gone away')"), "OperationalError: (2006, 'MySQL server has gone away')");
-    // });
+    it('處理 ( ) 符號', () => {
+      assert.equal(pangu.spacing('前面(中文123漢字)後面'), '前面 (中文 123 漢字) 後面');
+      assert.equal(pangu.spacing('前面(中文123)後面'), '前面 (中文 123) 後面');
+      assert.equal(pangu.spacing('前面(123漢字)後面'), '前面 (123 漢字) 後面');
+      assert.equal(pangu.spacing('前面(中文123) tail'), '前面 (中文 123) tail');
+      assert.equal(pangu.spacing('head (中文123漢字)後面'), 'head (中文 123 漢字) 後面');
+      assert.equal(pangu.spacing('head (中文123漢字) tail'), 'head (中文 123 漢字) tail');
+      assert.equal(pangu.spacing('(or simply "React")'), '(or simply "React")');
+      assert.equal(pangu.spacing("OperationalError: (2006, 'MySQL server has gone away')"), "OperationalError: (2006, 'MySQL server has gone away')");
+    });
 
-    // it('處理 { } 符號', () => {
-    //   assert.equal(pangu.spacing('前面{中文123漢字}後面'), '前面 {中文 123 漢字} 後面');
-    //   assert.equal(pangu.spacing('前面{中文123}後面'), '前面 {中文 123} 後面');
-    //   assert.equal(pangu.spacing('前面{123漢字}後面'), '前面 {123 漢字} 後面');
-    //   assert.equal(pangu.spacing('前面{中文123} tail'), '前面 {中文 123} tail');
-    //   assert.equal(pangu.spacing('head {中文123漢字}後面'), 'head {中文 123 漢字} 後面');
-    //   assert.equal(pangu.spacing('head {中文123漢字} tail'), 'head {中文 123 漢字} tail');
-    // });
+    it('處理 { } 符號', () => {
+      assert.equal(pangu.spacing('前面{中文123漢字}後面'), '前面 {中文 123 漢字} 後面');
+      assert.equal(pangu.spacing('前面{中文123}後面'), '前面 {中文 123} 後面');
+      assert.equal(pangu.spacing('前面{123漢字}後面'), '前面 {123 漢字} 後面');
+      assert.equal(pangu.spacing('前面{中文123} tail'), '前面 {中文 123} tail');
+      assert.equal(pangu.spacing('head {中文123漢字}後面'), 'head {中文 123 漢字} 後面');
+      assert.equal(pangu.spacing('head {中文123漢字} tail'), 'head {中文 123 漢字} tail');
+    });
 
-    // it('處理 [ ] 符號', () => {
-    //   assert.equal(pangu.spacing('前面[中文123漢字]後面'), '前面 [中文 123 漢字] 後面');
-    //   assert.equal(pangu.spacing('前面[中文123]後面'), '前面 [中文 123] 後面');
-    //   assert.equal(pangu.spacing('前面[123漢字]後面'), '前面 [123 漢字] 後面');
-    //   assert.equal(pangu.spacing('前面[中文123] tail'), '前面 [中文 123] tail');
-    //   assert.equal(pangu.spacing('head [中文123漢字]後面'), 'head [中文 123 漢字] 後面');
-    //   assert.equal(pangu.spacing('head [中文123漢字] tail'), 'head [中文 123 漢字] tail');
-    // });
+    it('處理 [ ] 符號', () => {
+      assert.equal(pangu.spacing('前面[中文123漢字]後面'), '前面 [中文 123 漢字] 後面');
+      assert.equal(pangu.spacing('前面[中文123]後面'), '前面 [中文 123] 後面');
+      assert.equal(pangu.spacing('前面[123漢字]後面'), '前面 [123 漢字] 後面');
+      assert.equal(pangu.spacing('前面[中文123] tail'), '前面 [中文 123] tail');
+      assert.equal(pangu.spacing('head [中文123漢字]後面'), 'head [中文 123 漢字] 後面');
+      assert.equal(pangu.spacing('head [中文123漢字] tail'), 'head [中文 123 漢字] tail');
+    });
 
-    // it('處理 “ ” 符號', () => {
-    //   // \u201c and \u201d
-    //   assert.equal(pangu.spacing('前面“中文123漢字”後面'), '前面 “中文 123 漢字” 後面');
-    // });
+    it('處理 “ ” 符號', () => {
+      // \u201c and \u201d
+      assert.equal(pangu.spacing('前面“中文123漢字”後面'), '前面 “中文 123 漢字” 後面');
+    });
 
     // 成對符號：相同
 

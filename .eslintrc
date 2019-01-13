@@ -12,6 +12,7 @@
     "curly": 2,
     "indent": [2, 2],
     "max-len": 0,
+    "no-useless-escape": 0,
     "quotes": [1, "single"]
   }
 }
