@@ -1,27 +1,27 @@
-// var throttle = function(fn, delay, mustRunDelay) {
-//   var timer = null;
-//   var t_start;
-//   return function() {
-//     var self = this;
-//     var args = arguments;
-//     var t_curr = +new Date();
+var debounce = function(fn, delay, mustRunDelay) {
+  var timer = null;
+  var startTime = null;
+  return function() {
+    var self = this;
+    var args = arguments;
+    var currentTime = + new Date();
 
-//     clearTimeout(timer);
+    clearTimeout(timer);
 
-//     if (!t_start) {
-//       t_start = t_curr;
-//     }
+    if (!startTime) {
+      startTime = currentTime;
+    }
 
-//     if (t_curr - t_start >= mustRunDelay) {
-//       fn.apply(self, args);
-//       t_start = t_curr;
-//     } else {
-//       timer = setTimeout(function() {
-//         fn.apply(self, args);
-//       }, delay);
-//     }
-//   };
-// };
+    if (currentTime - startTime >= mustRunDelay) {
+      fn.apply(self, args);
+      startTime = currentTime;
+    } else {
+      timer = setTimeout(function() {
+        fn.apply(self, args);
+      }, delay);
+    }
+  };
+};
 
 chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
   if (!response.result) {
@@ -32,47 +32,24 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     return
   }
 
-  // TODO: async.queue()
-  // https://www.jsdelivr.com/package/npm/lodash
-  // https://www.jsdelivr.com/package/npm/async
-
-  // TODO: Forced reflow while executing JavaScript took 136ms
-  // TODO: requestIdleCallback
-  // TODO: createTreeWalker
-
-  // var queue = async.queue(function(node, callback) {
-  //     console.log('node', node);
-  //     callback();
-  // }, 1);
+  var queue = [];
 
   setTimeout(() => {
     pangu.spacingPage();
   }, 1000);
 
-  var mutatedNodes = [];
-
-  // TODO
-  // put every node into a queue
-  // and make sure there is only one worker to process the queue?
-  // it seems is ok to have many workers?
-  // if there are more workers trigger by debounce means the processing is too slow
-
-  debouncedSpacingNodes = _.debounce((workerName) => {
-    console.log(`${workerName} started: mutatedNodes.length`, mutatedNodes.length);
-
+  // it's possible that multiple workers process the queue at the same time
+  debouncedSpacingNodes = debounce(() => {
     // a single node could be very big which contains a lot of child nodes
-    while (mutatedNodes.length) {
-      var node = mutatedNodes.shift();
+    while (queue.length) {
+      var node = queue.shift();
       if (node) {
         // TODO: there could be node.textContent or node.data
         pangu.spacingNode(node);
       }
     }
+  }, 500, {'maxWait': 2000});
 
-    console.log(`${workerName} finished`);
-  }, 300, {'maxWait': 1000});
-
-  let workerCounter = 1;
   var observer = new MutationObserver(function(mutations, observer) {
     // Element: https://developer.mozilla.org/en-US/docs/Web/API/Element
     // Text: https://developer.mozilla.org/en-US/docs/Web/API/Text
@@ -81,23 +58,22 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
         case 'childList':
           mutation.addedNodes.forEach(function(node) {
             if (node.nodeType === Node.ELEMENT_NODE) {
-              mutatedNodes.push(node);
+              queue.push(node);
             } else if (node.nodeType === Node.TEXT_NODE) {
-              mutatedNodes.push(node.parentNode);
+              queue.push(node.parentNode);
             }
           });
           break;
         case 'characterData':
           const node = mutation.target;
           if (node.nodeType === Node.TEXT_NODE) {
-            mutatedNodes.push(node.parentNode);
+            queue.push(node.parentNode);
           }
           break;
       }
     });
 
-    debouncedSpacingNodes(`worker${workerCounter}`);
-    workerCounter += 1;
+    debouncedSpacingNodes();
   });
   observer.observe(document.body, {
     characterData: true,

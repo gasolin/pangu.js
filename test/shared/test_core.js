@@ -353,6 +353,11 @@ describe('Pangu', () => {
     //   assert.equal(pangu.spacing("陳上進 likes 林依諾's status."), "陳上進 likes 林依諾's status.");
     //   assert.equal(pangu.spacing("举个栗子，如果一道题只包含'A' ~ 'Z'意味着字符集大小是"), "举个栗子，如果一道题只包含 'A' ~ 'Z' 意味着字符集大小是");
     // });
+
+    // it('處理 “ “ 符號', () => {
+    //   assert.equal(pangu.spacing('前面“後面'), '前面“後面');
+    //   assert.equal(pangu.spacing('前面“中間“後面'), '前面 “中間“ 後面');
+    // });
   });
 
   describe('spacingText()', () => {

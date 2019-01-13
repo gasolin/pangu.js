@@ -29,8 +29,6 @@
                 "file:///*/*"
             ],
             "js": [
-                "vendors/lodash.min.js",
-                "vendors/async.min.js",
                 "vendors/pangu.min.js",
                 "js/content_script.js"
             ],

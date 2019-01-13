@@ -47,6 +47,7 @@
     "test:browser": "npm run build:browser && karma start",
     "test:node": "npm run build:node && mocha --require @babel/register test/node/",
     "test": "npm run test:shared && npm run test:browser && npm run test:node",
+    "watch:shared": "npm run test:shared -- --watch",
     "watch:browser": "webpack --watch",
     "watch:node": "babel src/node/ -d dist/node/ --watch"
   },
