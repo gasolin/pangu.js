@@ -126,7 +126,7 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('Vinta-Mollie'), 'Vinta-Mollie');
       assert.equal(pangu.spacing('Vinta-陳上進'), 'Vinta - 陳上進');
       assert.equal(pangu.spacing('陳上進-Vinta'), '陳上進 - Vinta');
-      assert.equal(pangu.spacing('陳上進--Vinta'), '陳上進 -- Vinta');
+      // assert.equal(pangu.spacing('陳上進--Vinta'), '陳上進 -- Vinta');
       assert.equal(pangu.spacing('得到一個A-B的結果'), '得到一個 A-B 的結果');
     });
 
@@ -218,14 +218,14 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('請@陳上進 吃大便'), '請 @陳上進 吃大便');
     });
 
-    it('處理 # 符號', () => {
-      assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
-      assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
-      assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
-      assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
-      assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
-    });
+    // it('處理 # 符號', () => {
+    //   assert.equal(pangu.spacing('前面#後面'), '前面 #後面');
+    //   assert.equal(pangu.spacing('前面C#後面'), '前面 C# 後面');
+    //   assert.equal(pangu.spacing('前面#H2G2後面'), '前面 #H2G2 後面');
+    //   assert.equal(pangu.spacing('前面 #銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+    //   assert.equal(pangu.spacing('前面#銀河便車指南 後面'), '前面 #銀河便車指南 後面');
+    //   assert.equal(pangu.spacing('前面#銀河公車指南 #銀河拖吊車指南 後面'), '前面 #銀河公車指南 #銀河拖吊車指南 後面');
+    // });
 
     // 換成全形符號
 
@@ -258,7 +258,8 @@ describe('Pangu', () => {
       assert.equal(pangu.spacing('電話:123456789'), '電話：123456789');
       assert.equal(pangu.spacing('前面:) 後面'), '前面 :) 後面');
       assert.equal(pangu.spacing('前面:poop:後面'), '前面 :poop: 後面');
-      // assert.equal(pangu.spacing('前面:I have no idea後面'), '前面: I have no idea 後面');
+      assert.equal(pangu.spacing('前面:I have no idea後面'), '前面：I have no idea 後面');
+      assert.equal(pangu.spacing('前面: I have no idea後面'), '前面: I have no idea 後面');
     });
 
     it('處理 , 符號', () => {

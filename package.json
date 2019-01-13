@@ -47,9 +47,9 @@
     "test:browser": "npm run build:browser && karma start",
     "test:node": "npm run build:node && mocha --require @babel/register test/node/",
     "test": "npm run test:shared && npm run test:browser && npm run test:node",
-    "watch:shared": "npm run test:shared -- --watch",
-    "watch:browser": "webpack --watch",
-    "watch:node": "babel src/node/ -d dist/node/ --watch"
+    "watch:shared": "watch 'npm run test:shared' src/shared test/shared/",
+    "watch:browser": "watch 'npm run test:browser' src/browser test/browser/",
+    "watch:node": "watch 'npm run test:node' src/node test/node/"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
@@ -74,6 +74,7 @@
     "puppeteer": "1.11.0",
     "terser-webpack-plugin": "1.2.1",
     "underscore": "1.9.1",
+    "watch": "1.0.2",
     "webpack": "4.28.3",
     "webpack-cli": "3.1.2"
   }
