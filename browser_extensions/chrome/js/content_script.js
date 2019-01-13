@@ -28,6 +28,10 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
     return;
   }
 
+  if (!(document.body instanceof Node)) {
+    return
+  }
+
   // TODO: async.queue()
   // https://www.jsdelivr.com/package/npm/lodash
   // https://www.jsdelivr.com/package/npm/async
