@@ -64,10 +64,6 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
       // console.log('process: mutatedNodes.length', mutatedNodes.length);
       var node = mutatedNodes.shift();
       if (node && node.data) {
-        if (node.data.includes('奴隶区 The Animation')) {
-          console.dir(node);
-        }
-
         pangu.spacingNode(node);
       }
     }
@@ -77,18 +73,19 @@ chrome.runtime.sendMessage({purpose: 'can_spacing'}, function(response) {
 
   let workerCounter = 1;
   var observer = new MutationObserver(function(mutations, observer) {
-    // console.log('mutations.length', mutations.length);
-
     mutations.forEach(function(mutation) {
       switch (mutation.type) {
         case 'childList':
           mutation.addedNodes.forEach(function(node) {
-            mutatedNodes.push(node);
+            if (node.nodeType === 3) { // Node.TEXT_NODE
+              mutatedNodes.push(node.parentNode);
+            } else {
+              mutatedNodes.push(node);
+            }
           });
           break;
         case 'characterData':
-          // console.dir(mutation);
-          mutatedNodes.push(mutation.target);
+          mutatedNodes.push(mutation.target.parentNode);
           break;
       }
     });
