@@ -336,7 +336,6 @@ describe('Pangu', () => {
     // 成對符號：相同
 
     it('處理 ` ` 符號', () => {
-      assert.equal(pangu.spacing('前面`後面'), '前面`後面');
       assert.equal(pangu.spacing('前面`中間`後面'), '前面 `中間` 後面');
     });
 
@@ -361,7 +360,6 @@ describe('Pangu', () => {
     });
 
     it('處理 ״ ״ \\u05f4 \\u05f4 符號', () => {
-      assert.equal(pangu.spacing('前面״後面'), '前面״後面');
       assert.equal(pangu.spacing('前面״中間״後面'), '前面 ״中間״ 後面');
     });
   });
